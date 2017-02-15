@@ -17,6 +17,8 @@ namespace DBMS.Processors
         private IQueryable<TestResult> query;
         private List<TestResult> page;
 
+        public event QueryExecuted QueryExecuted;
+
         public EFProcessor()
         {
             dbModel = new DBModel();

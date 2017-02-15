@@ -44,7 +44,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel = new System.Windows.Forms.Panel();
             this.initialPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fixedPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
