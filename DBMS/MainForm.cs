@@ -1,4 +1,6 @@
 ﻿using DBMS.DataLayer;
+using DBMS.ObjectModel;
+using DBMS.Processors;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,10 @@ namespace DBMS
 {
     public partial class MainForm : Form
     {
-        ILog _log = LogManager.GetLogger("DBMS");
+        private ILog _log = LogManager.GetLogger("DBMS");
         private DataGridView dataGridView;
         public const int PageSize = 200;
+        private IProcessor processor;
 
         public MainForm()
         {
@@ -34,6 +37,7 @@ namespace DBMS
                 this.Controls.Remove(dataGridView);
                 dataGridView.Dispose();
             }
+
             dataGridView = new DataGridView();
 
             ((ISupportInitialize)(dataGridView)).BeginInit();
@@ -53,6 +57,7 @@ namespace DBMS
             dataGridView.ShowRowErrors = false;
             dataGridView.TabIndex = 3;
             dataGridView.VirtualMode = isVirtual;
+
             if (isVirtual)
                 dataGridView.CellValueNeeded += DataGridView_CellValueNeeded;
 
@@ -87,7 +92,17 @@ namespace DBMS
 
         private void eFToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (processor != null)
+                processor.Dispose();
+
+            processor = new EFProcessor();
+
             CreateDataGridView(false);
+
+            dataGridView.DataSource = processor.GetDataSource();
+
+            dataGridView.Invalidate();
+            dataGridView.Refresh();
         }
 
         private void paggingToolStripMenuItem_Click(object sender, EventArgs e)
