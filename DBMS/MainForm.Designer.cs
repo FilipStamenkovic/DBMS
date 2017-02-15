@@ -28,34 +28,114 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnMethod1 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gridFilteringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.paggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.paggingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.commonViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indexedViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnMethod1
+            // menuStrip1
             // 
-            this.btnMethod1.Location = new System.Drawing.Point(103, 44);
-            this.btnMethod1.Name = "btnMethod1";
-            this.btnMethod1.Size = new System.Drawing.Size(75, 23);
-            this.btnMethod1.TabIndex = 0;
-            this.btnMethod1.Text = "Method 1";
-            this.btnMethod1.UseVisualStyleBackColor = true;
-            this.btnMethod1.Click += new System.EventHandler(this.btnMethod1_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.gridFilteringToolStripMenuItem,
+            this.paggingToolStripMenuItem,
+            this.paggingViewToolStripMenuItem,
+            this.fToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(832, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // gridFilteringToolStripMenuItem
+            // 
+            this.gridFilteringToolStripMenuItem.Name = "gridFilteringToolStripMenuItem";
+            this.gridFilteringToolStripMenuItem.Size = new System.Drawing.Size(123, 20);
+            this.gridFilteringToolStripMenuItem.Text = "In Memory Filtering";
+            this.gridFilteringToolStripMenuItem.Click += new System.EventHandler(this.gridFilteringToolStripMenuItem_Click);
+            // 
+            // paggingToolStripMenuItem
+            // 
+            this.paggingToolStripMenuItem.Name = "paggingToolStripMenuItem";
+            this.paggingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.paggingToolStripMenuItem.Text = "Pagging";
+            // 
+            // paggingViewToolStripMenuItem
+            // 
+            this.paggingViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.commonViewToolStripMenuItem,
+            this.indexedViewToolStripMenuItem});
+            this.paggingViewToolStripMenuItem.Name = "paggingViewToolStripMenuItem";
+            this.paggingViewToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.paggingViewToolStripMenuItem.Text = "Pagging View";
+            // 
+            // fToolStripMenuItem
+            // 
+            this.fToolStripMenuItem.Name = "fToolStripMenuItem";
+            this.fToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
+            this.fToolStripMenuItem.Text = "One Table SQL";
+            // 
+            // commonViewToolStripMenuItem
+            // 
+            this.commonViewToolStripMenuItem.Name = "commonViewToolStripMenuItem";
+            this.commonViewToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.commonViewToolStripMenuItem.Text = "Common View";
+            // 
+            // indexedViewToolStripMenuItem
+            // 
+            this.indexedViewToolStripMenuItem.Name = "indexedViewToolStripMenuItem";
+            this.indexedViewToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.indexedViewToolStripMenuItem.Text = "Indexed View";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 291);
-            this.Controls.Add(this.btnMethod1);
+            this.ClientSize = new System.Drawing.Size(832, 529);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnMethod1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gridFilteringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem paggingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem paggingViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem commonViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indexedViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
     }
 }
 

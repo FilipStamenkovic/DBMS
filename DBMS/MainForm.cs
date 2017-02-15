@@ -22,5 +22,15 @@ namespace DBMS
             Method1 method1 = new Method1();
             method1.ShowDialog();
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private void gridFilteringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
