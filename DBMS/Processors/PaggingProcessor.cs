@@ -14,7 +14,7 @@ namespace DBMS.Processors
         private int pageNumber;
         private string query;
         public PaggingProcessor(string query)
-        {            
+        {
             this.query = query;
             pageNumber = -1;
         }
@@ -42,6 +42,14 @@ namespace DBMS.Processors
         public object GetDataSource()
         {
             throw new NotImplementedException();
+        }
+
+        public int GetRowCount()
+        {
+            using (var db = new DBModel())
+            {
+                return db.TestResults.Where(x => x.Valid).Count();
+            }
         }
     }
 }

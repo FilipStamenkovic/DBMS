@@ -1,6 +1,7 @@
 ﻿using DBMS.DataLayer;
 using DBMS.ObjectModel;
 using DBMS.Processors;
+using DBMS.Queries;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace DBMS
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AutoGenerateColumns = !isVirtual;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Dock = DockStyle.Bottom;
+            dataGridView.Dock = DockStyle.Fill;
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersVisible = false;
@@ -71,7 +72,7 @@ namespace DBMS
 
         private void DataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
-            
+            e.Value = processor.GetCellValue(e.RowIndex, e.ColumnIndex);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -108,7 +109,7 @@ namespace DBMS
             dataGridView.Refresh();
         }
 
-        private void paggingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void fixedPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
         }
@@ -126,6 +127,13 @@ namespace DBMS
         private void initialPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
+
+            if (processor != null)
+                processor.Dispose();
+
+            processor = new PaggingProcessor(Query.InitialQuery);
+
+            dataGridView.RowCount = processor.GetRowCount();
         }
 
         private void CreateColumns()

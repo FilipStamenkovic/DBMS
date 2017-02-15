@@ -10,5 +10,6 @@ namespace DBMS.ObjectModel
     {
         object GetDataSource();
         object GetCellValue(int x, int y);
+        int GetRowCount();
     }
 }

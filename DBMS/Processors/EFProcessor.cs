@@ -33,5 +33,10 @@ namespace DBMS.Processors
             dbModel.TestResults.LoadAsync();
             return dbModel.TestResults.Local.ToBindingList();
         }
+
+        public int GetRowCount()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

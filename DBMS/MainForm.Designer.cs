@@ -34,14 +34,14 @@
             this.eFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridFilteringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.initialPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixedPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paggingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexedViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.initialPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fixedPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +98,20 @@
             this.paggingToolStripMenuItem.Name = "paggingToolStripMenuItem";
             this.paggingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.paggingToolStripMenuItem.Text = "Pagging";
-            this.paggingToolStripMenuItem.Click += new System.EventHandler(this.paggingToolStripMenuItem_Click);
+            // 
+            // initialPaggingToolStripMenuItem
+            // 
+            this.initialPaggingToolStripMenuItem.Name = "initialPaggingToolStripMenuItem";
+            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.initialPaggingToolStripMenuItem.Text = "Initial pagging";
+            this.initialPaggingToolStripMenuItem.Click += new System.EventHandler(this.initialPaggingToolStripMenuItem_Click);
+            // 
+            // fixedPaggingToolStripMenuItem
+            // 
+            this.fixedPaggingToolStripMenuItem.Name = "fixedPaggingToolStripMenuItem";
+            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fixedPaggingToolStripMenuItem.Text = "Fixed pagging";
+            this.fixedPaggingToolStripMenuItem.Click += new System.EventHandler(this.fixedPaggingToolStripMenuItem_Click);
             // 
             // paggingViewToolStripMenuItem
             // 
@@ -144,19 +157,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
-            // 
-            // initialPaggingToolStripMenuItem
-            // 
-            this.initialPaggingToolStripMenuItem.Name = "initialPaggingToolStripMenuItem";
-            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.initialPaggingToolStripMenuItem.Text = "Initial pagging";
-            this.initialPaggingToolStripMenuItem.Click += new System.EventHandler(this.initialPaggingToolStripMenuItem_Click);
-            // 
-            // fixedPaggingToolStripMenuItem
-            // 
-            this.fixedPaggingToolStripMenuItem.Name = "fixedPaggingToolStripMenuItem";
-            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fixedPaggingToolStripMenuItem.Text = "Fixed pagging";
             // 
             // MainForm
             // 
