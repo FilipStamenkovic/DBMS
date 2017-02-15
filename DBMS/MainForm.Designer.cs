@@ -31,19 +31,24 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridFilteringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paggingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commonViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexedViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.eFToolStripMenuItem,
             this.gridFilteringToolStripMenuItem,
             this.paggingToolStripMenuItem,
             this.paggingViewToolStripMenuItem,
@@ -65,9 +70,16 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // eFToolStripMenuItem
+            // 
+            this.eFToolStripMenuItem.Name = "eFToolStripMenuItem";
+            this.eFToolStripMenuItem.Size = new System.Drawing.Size(31, 20);
+            this.eFToolStripMenuItem.Text = "EF";
+            this.eFToolStripMenuItem.Click += new System.EventHandler(this.eFToolStripMenuItem_Click);
             // 
             // gridFilteringToolStripMenuItem
             // 
@@ -81,6 +93,7 @@
             this.paggingToolStripMenuItem.Name = "paggingToolStripMenuItem";
             this.paggingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.paggingToolStripMenuItem.Text = "Pagging";
+            this.paggingToolStripMenuItem.Click += new System.EventHandler(this.paggingToolStripMenuItem_Click);
             // 
             // paggingViewToolStripMenuItem
             // 
@@ -90,12 +103,7 @@
             this.paggingViewToolStripMenuItem.Name = "paggingViewToolStripMenuItem";
             this.paggingViewToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
             this.paggingViewToolStripMenuItem.Text = "Pagging View";
-            // 
-            // fToolStripMenuItem
-            // 
-            this.fToolStripMenuItem.Name = "fToolStripMenuItem";
-            this.fToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
-            this.fToolStripMenuItem.Text = "One Table SQL";
+            this.paggingViewToolStripMenuItem.Click += new System.EventHandler(this.paggingViewToolStripMenuItem_Click);
             // 
             // commonViewToolStripMenuItem
             // 
@@ -109,17 +117,43 @@
             this.indexedViewToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.indexedViewToolStripMenuItem.Text = "Indexed View";
             // 
+            // fToolStripMenuItem
+            // 
+            this.fToolStripMenuItem.Name = "fToolStripMenuItem";
+            this.fToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
+            this.fToolStripMenuItem.Text = "One Table SQL";
+            this.fToolStripMenuItem.Click += new System.EventHandler(this.fToolStripMenuItem_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 507);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(832, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 529);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,6 +170,9 @@
         private System.Windows.Forms.ToolStripMenuItem commonViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem indexedViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem eFToolStripMenuItem;
     }
 }
 
