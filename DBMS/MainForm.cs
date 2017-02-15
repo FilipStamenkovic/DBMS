@@ -49,7 +49,7 @@ namespace DBMS
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AutoGenerateColumns = !isVirtual;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Dock = DockStyle.Bottom;
+            dataGridView.Dock = DockStyle.Fill;
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersVisible = false;
@@ -63,6 +63,7 @@ namespace DBMS
             {
                 CreateColumns();
                 dataGridView.CellValueNeeded += DataGridView_CellValueNeeded;
+            }
 
             this.panel.Controls.Add(dataGridView);
 
