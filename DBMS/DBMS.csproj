@@ -80,8 +80,10 @@
     </Compile>
     <Compile Include="ObjectModel\IProcessor.cs" />
     <Compile Include="Processors\EFProcessor.cs" />
+    <Compile Include="Processors\PaggingProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Query.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
