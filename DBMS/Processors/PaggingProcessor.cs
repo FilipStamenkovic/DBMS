@@ -28,12 +28,14 @@ namespace DBMS.Processors
         {
             int requestedPage = x / MainForm.PageSize;
 
-            if (requestedPage == pageNumber && data != null)
+            if (requestedPage != pageNumber || data != null)
             {
                 pageNumber = requestedPage;
                 using (var db = new DBModel())
                 {
-                    data = db.Database.SqlQuery<object[]>(string.Format(query, pageNumber & MainForm.PageSize, MainForm.PageSize, long.MaxValue)).ToArray();
+                    var result = db.Database.SqlQuery<object>(string.Format(query, pageNumber & MainForm.PageSize, MainForm.PageSize, long.MaxValue)).ToArray();
+
+                    int a = 3;
                 }
             }
             return data[x % MainForm.PageSize][y];

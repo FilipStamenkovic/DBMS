@@ -9,7 +9,7 @@ namespace DBMS.ObjectModel
     public interface IProcessor : IDisposable
     {
         object GetDataSource();
-        object GetCellValue(int x, int y);
+        object GetCellValue(int rowIndex, int columnIndex);
         int GetRowCount();
     }
 }

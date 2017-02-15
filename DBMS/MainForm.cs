@@ -65,7 +65,9 @@ namespace DBMS
                 CreateColumns();
                 dataGridView.CellValueNeeded += DataGridView_CellValueNeeded;
             }
-            this.Controls.Add(dataGridView);
+
+            this.panel.Controls.Add(dataGridView);
+
             ((ISupportInitialize)(dataGridView)).EndInit();
             this.ResumeLayout(false);
         }
@@ -83,15 +85,6 @@ namespace DBMS
         private void gridFilteringToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(false);
-            //using (var db = new DBModel())
-            //{
-            //    var query = db.Products.Where(p => p.ProductType.Name == "Varistor");
-
-            //    foreach (var product in query)
-            //    {
-            //        string serial = product.SerialNumber;
-            //    }
-            //}
         }
 
         private void eFToolStripMenuItem_Click(object sender, EventArgs e)
@@ -101,12 +94,8 @@ namespace DBMS
 
             processor = new EFProcessor();
 
-            CreateDataGridView(false);
-
-            dataGridView.DataSource = processor.GetDataSource();
-
-            dataGridView.Invalidate();
-            dataGridView.Refresh();
+            CreateDataGridView(true);
+            this.Invalidate();
         }
 
         private void fixedPaggingToolStripMenuItem_Click(object sender, EventArgs e)
