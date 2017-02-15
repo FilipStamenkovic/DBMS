@@ -59,8 +59,8 @@ namespace DBMS.DataLayer
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Product>()
-                .HasMany(e => e.Products1)
-                .WithOptional(e => e.Product1)
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<ProductType>()

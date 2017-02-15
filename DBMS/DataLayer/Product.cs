@@ -12,7 +12,7 @@ namespace DBMS.DataLayer
         public Product()
         {
             ProductProperties = new HashSet<ProductProperty>();
-            Products1 = new HashSet<Product>();
+            Children = new HashSet<Product>();
         }
 
         public long Id { get; set; }
@@ -53,9 +53,9 @@ namespace DBMS.DataLayer
         public virtual ICollection<ProductProperty> ProductProperties { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products1 { get; set; }
+        public virtual ICollection<Product> Children { get; set; }
 
-        public virtual Product Product1 { get; set; }
+        public virtual Product Parent { get; set; }
 
         public virtual ProductType ProductType { get; set; }
     }
