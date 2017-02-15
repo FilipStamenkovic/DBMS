@@ -1,6 +1,8 @@
-﻿using DBMS.ObjectModel;
+﻿using DBMS.DataLayer;
+using DBMS.ObjectModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +11,16 @@ namespace DBMS.Processors
 {
     public class EFProcessor : IProcessor
     {
+        private DBModel dbModel;
+
+        public EFProcessor()
+        {
+            dbModel = new DBModel();
+        }
+
         public void Dispose()
         {
-
+            dbModel.Dispose();
         }
 
         public object GetCellValue(int x, int y)
@@ -21,8 +30,8 @@ namespace DBMS.Processors
 
         public object GetDataSource()
         {
-            //napisi upit za entity framework
-            return null;
+            dbModel.TestResults.LoadAsync();
+            return dbModel.TestResults.Local.ToBindingList();
         }
     }
 }
