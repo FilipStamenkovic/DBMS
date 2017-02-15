@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace DBMS
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+        }
+
+        private void btnMethod1_Click(object sender, EventArgs e)
+        {
+            Method1 method1 = new Method1();
+            method1.ShowDialog();
         }
     }
 }
