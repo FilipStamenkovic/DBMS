@@ -9,66 +9,28 @@ namespace DBMS.Queries
     public class Query
     {
         public const string InitialQuery = @"SELECT distinct
- po.Id,
- p.Id,
 
-ppo.ExternalId as FAUF_2_Nr,
+ppo.ExternalId as Operation,
 
-pop1.Value AS MO_Charge_Nr,
-pop2.Value AS MO_Charge_FERT,
+pop1.Value AS Batch,
+pop2.Value AS BatchType,
 
-pp6.Value AS MO_Charge_Segment,
-pp7.Value AS MO_Charge_Lage,
+pp6.Value AS BatchSegment,
+pp7.Value AS BatchLot,
 
-pop3.Value AS Pulver_Charge_Nr,
+pop3.Value AS PowderCharge,
 
-cv.Name AS Pruefplan_Nr,
-cv.Revision AS Pruefplan_Rev,
+cv.Name AS TestPlan,
+cv.Revision AS TestPlanRevision,
 
-cvMI.code AS Material_Nr,
-cvMI.ItemDescription AS Material_Bezeichung,
+cvMI.code AS Material,
+cvMI.ItemDescription AS MaterialDescription,
 
-mip1.Value AS Var_Typ,
-mip2.Value AS Var_D,
-mip3.Value AS Var_H
+mip1.Value AS VaristorType,
+mip2.Value AS VarDiameter,
+mip3.Value AS VarHeight
 
-      ,[TestTs]
-      ,[ProductSerial]
-      ,[TestStatus]
-      ,[Class1]
-      ,[Class2]
-      ,[TestTemperature]
-      ,[DCTs]
-      ,[DCParam1]
-      ,[DCParam2]
-      ,[DCParam3]
-      ,[DCParam4]
-      ,[DCParam5]
-      ,[DCParam6]
-      ,[DCParam7]
-      ,[DCParam8]
-      ,[DCAlpha]
-      ,[DCStatus]
-      ,[ACTs]
-      ,[ACParam1]
-      ,[ACParam2]
-      ,[ACParam3]
-      ,[ACParam4]
-      ,[ACParam5]
-      ,[ACStatus]
-      ,[RestTs]
-      ,[RestParam1]
-      ,[RestParam2]
-      ,[RestParam3]
-      ,[RestParam4]
-      ,[RestParam5]
-      ,[RestParam6]
-      ,[RestStatus]
-      ,[ChargeTs]
-      ,[ChargeParam1]
-      ,[ChargeParam2]
-      ,[ChargeParam3]
-      ,[ChargeStatus]
+      ,TestResult.*
 
 FROM
 	(
@@ -95,9 +57,9 @@ FROM
 		    ) as temp
         ) as temp2
 	where temp2.rn between {0} and {1}
-    ) v
+    ) TestResult
 
-	left join Products p on v.ProductSerial = p.SerialNumber
+	left join Products p on TestResult.ProductSerial = p.SerialNumber
 
 	left join ProductionOrders po on po.Id = p.ProductionOrderId
     left join ProductionOrders ppo on ppo.Id = po.ParentId
@@ -123,6 +85,6 @@ FROM
 	left join MaterialItemProperties mip2 on cvMI.id = mip2.MaterialItemId and mip2.MaterialClassId in (select Id from MaterialClasses where Name = 'Diameter')
 	left join MaterialItemProperties mip3 on cvMI.id = mip3.MaterialItemId and mip3.MaterialClassId in (select Id from MaterialClasses where Name = 'Height')
 
-order by po.Id, p.Id";
+order by TestResult.Id";
     }
 }
