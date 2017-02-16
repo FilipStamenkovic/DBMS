@@ -21,6 +21,8 @@ namespace DBMS
         private DataGridView dataGridView;
         public const int PageSize = 200;
         private IProcessor processor;
+        private const string labelText = "Time elapsed: {0}. Rows fetched: {1}";
+
 
         public MainForm()
         {
@@ -28,11 +30,29 @@ namespace DBMS
             dataGridView = null;
         }
 
+        private void CreateProcessorAndRefresh(ProcessorType processorType, string query, int columnCount)
+        {
+            if (processor != null)
+            {
+                processor.Dispose();
+                processor.QueryExecuted -= Processor_QueryExecuted;
+            }
+            if (processorType == ProcessorType.EFProcessor)
+                processor = new EFProcessor();
+            else if (processorType == ProcessorType.PaggingProcessor)
+                processor = new PaggingProcessor(query, columnCount);
+
+            processor.QueryExecuted += Processor_QueryExecuted;
+
+            if (dataGridView.VirtualMode)
+                dataGridView.RowCount = processor.GetRowCount();
+        }
+
         private void CreateDataGridView(bool isVirtual)
         {
             if (dataGridView != null)
             {
-                if(dataGridView.VirtualMode)
+                if (dataGridView.VirtualMode)
                     dataGridView.CellValueNeeded -= DataGridView_CellValueNeeded;
 
                 this.Controls.Remove(dataGridView);
@@ -70,6 +90,7 @@ namespace DBMS
 
             ((ISupportInitialize)(dataGridView)).EndInit();
             this.ResumeLayout(false);
+            this.Invalidate();
         }
 
         private void DataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
@@ -89,13 +110,13 @@ namespace DBMS
 
         private void eFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (processor != null)
-                processor.Dispose();
-
-            processor = new EFProcessor();
-
             CreateDataGridView(true);
-            this.Invalidate();
+            CreateProcessorAndRefresh(ProcessorType.EFProcessor, null, dataGridView.ColumnCount);
+        }
+
+        private void Processor_QueryExecuted(double time, int rowCount)
+        {
+            toolStripStatusLabel1.Text = string.Format(labelText, time.ToString(".000"), rowCount);
         }
 
         private void fixedPaggingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -116,26 +137,20 @@ namespace DBMS
         private void initialPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
-
-            if (processor != null)
-                processor.Dispose();
-
-            processor = new PaggingProcessor(Query.InitialQuery);
-
-            dataGridView.RowCount = processor.GetRowCount();
+            CreateProcessorAndRefresh(ProcessorType.PaggingProcessor, Query.InitialQuery, dataGridView.ColumnCount);
         }
 
         private void CreateColumns()
-        {            
-            DataGridViewTextBoxColumn gvC1 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC2 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC3 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC4 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC5 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC6 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC7 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC8 = new  DataGridViewTextBoxColumn();
-            DataGridViewTextBoxColumn gvC9 = new  DataGridViewTextBoxColumn();
+        {
+            DataGridViewTextBoxColumn gvC1 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC2 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC3 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC4 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC5 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC6 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC7 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC8 = new DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn gvC9 = new DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn gvC10 = new DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn gvC11 = new DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn gvC12 = new DataGridViewTextBoxColumn();
@@ -183,7 +198,7 @@ namespace DBMS
             gvC1.Width = 130;
 
 
-            
+
             gvC2.HeaderText = "Batch";
             gvC2.Name = "Batch";
             gvC2.Width = 130;
@@ -195,7 +210,7 @@ namespace DBMS
             gvC4.HeaderText = "BatchSegment";
             gvC4.Name = "BatchSegment";
             gvC4.Width = 130;
-            
+
             gvC5.HeaderText = "BatchLot";
             gvC5.Name = "BatchLot";
             gvC5.Width = 130;
@@ -203,35 +218,35 @@ namespace DBMS
             gvC6.HeaderText = "PowderCharge";
             gvC6.Name = "PowderCharge";
             gvC6.Width = 130;
-            
+
             gvC7.HeaderText = "TestPlan";
             gvC7.Name = "TestPlan";
             gvC7.Width = 130;
-            
+
             gvC8.HeaderText = "TestPlanRevision";
             gvC8.Name = "TestPlanRevision";
             gvC8.Width = 130;
-            
+
             gvC9.HeaderText = "Material";
             gvC9.Name = "Material";
             gvC9.Width = 130;
-            
+
             gvC10.HeaderText = "MaterialDescription";
             gvC10.Name = "MaterialDescription";
             gvC10.Width = 130;
-            
+
             gvC11.HeaderText = "VaristorType";
             gvC11.Name = "VaristorType";
             gvC11.Width = 130;
-            
+
             gvC12.HeaderText = "VarDiameter";
             gvC12.Name = "VarDiameter";
             gvC12.Width = 130;
-            
+
             gvC13.HeaderText = "VarHeight";
             gvC13.Name = "VarHeight";
             gvC13.Width = 130;
-            
+
             gvC14.HeaderText = "TestTs";
             gvC14.Name = "TestTs";
             gvC14.Width = 130;
@@ -239,19 +254,19 @@ namespace DBMS
             gvC15.HeaderText = "ProductSerial";
             gvC15.Name = "ProductSerial";
             gvC15.Width = 130;
-            
+
             gvC16.HeaderText = "TestStatus";
             gvC16.Name = "TestStatus";
             gvC16.Width = 130;
-            
+
             gvC17.HeaderText = "Class1";
             gvC17.Name = "Class1";
             gvC17.Width = 130;
-            
+
             gvC18.HeaderText = "Class2";
             gvC18.Name = "Class2";
             gvC18.Width = 130;
-            
+
             gvC19.HeaderText = "TestTemperature";
 
 
@@ -443,7 +458,7 @@ namespace DBMS
 
             gvC50.Name = "ChargeStatus";
             gvC50.Width = 130;
-            
+
 
             this.dataGridView.Columns.AddRange(new DataGridViewColumn[] {
             gvC1,
