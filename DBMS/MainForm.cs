@@ -37,8 +37,9 @@ namespace DBMS
                 processor.Dispose();
                 processor.QueryExecuted -= Processor_QueryExecuted;
             }
+
             if (processorType == ProcessorType.EFProcessor)
-                processor = new EFProcessor();
+                processor = new EFProcessor(dataGridView);
             else if (processorType == ProcessorType.PaggingProcessor)
                 processor = new PaggingProcessor(query, columnCount);
 

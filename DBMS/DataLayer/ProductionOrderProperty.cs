@@ -23,8 +23,8 @@ namespace DBMS.DataLayer
 
         public virtual ProductionOrder ProductionOrder { get; set; }
 
-        public virtual ProductionOrderProperty ProductionOrderProperties1 { get; set; }
+        //public virtual ProductionOrderProperty ProductionOrderProperties1 { get; set; }
 
-        public virtual ProductionOrderProperty ProductionOrderProperty1 { get; set; }
+        //public virtual ProductionOrderProperty ProductionOrderProperty1 { get; set; }
     }
 }

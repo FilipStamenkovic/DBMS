@@ -20,7 +20,7 @@ namespace DBMS.DataLayer
         public string BatchLot { get; set; }
         public string PowderCharge { get; set; }
         public string TestPlan { get; set; }
-        public int TestPlanRevision { get; set; }
+        public int? TestPlanRevision { get; set; }
         public string Material { get; set; }
         public string MaterialDescription { get; set; }
         public string VaristorType { get; set; }

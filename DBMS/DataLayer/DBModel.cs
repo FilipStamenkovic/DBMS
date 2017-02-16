@@ -35,9 +35,9 @@ namespace DBMS.DataLayer
                 .WithRequired(e => e.MaterialItem)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ProductionOrderProperty>()
-                .HasOptional(e => e.ProductionOrderProperties1)
-                .WithRequired(e => e.ProductionOrderProperty1);
+            //modelBuilder.Entity<ProductionOrderProperty>()
+            //    .HasOptional(e => e.ProductionOrderProperties1)
+            //    .WithRequired(e => e.ProductionOrderProperty1);
 
             modelBuilder.Entity<ProductionOrder>()
                 .Property(e => e.Quantity)
