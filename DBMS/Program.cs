@@ -19,29 +19,3 @@ namespace DBMS
         }
     }
 }
-
-
-
-
-
-//filterBox = new TextBox();
-//filterBox.Location = e.Location;
-//            filterBox.Width = 200;
-
-//            filterBox.Text = filters[dataGridView1.Columns[e.ColumnIndex].HeaderText];
-
-//            this.Controls.Add(filterBox);
-//filterBox.BringToFront();
-//filterBox.Select();
-//filterBox.Focus();
-//filterBox.LostFocus += (focusSender, args) =>
-//              {
-//    filters[dataGridView1.Columns[e.ColumnIndex].HeaderText] = filterBox.Text;
-
-//    this.Controls.Remove(filterBox);
-//    filterBox.Dispose();
-//    filterBox = null;
-
-//    RefreshGrid();
-//};
-//}

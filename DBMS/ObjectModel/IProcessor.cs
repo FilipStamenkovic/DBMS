@@ -10,9 +10,10 @@ namespace DBMS.ObjectModel
     {
         object GetDataSource();
         object GetCellValue(int rowIndex, int columnIndex);
+        void SetFilterAndSort(string sort, string filterColumn, string filterValue, bool ascending);
         int GetRowCount();
 
-        event QueryExecuted QueryExecuted;        
+        event QueryExecuted QueryExecuted;
     }
 
     public delegate void QueryExecuted(double time, int rowCount);

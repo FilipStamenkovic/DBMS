@@ -20,8 +20,13 @@ namespace DBMS
         private ILog _log = LogManager.GetLogger("DBMS");
         private DataGridView dataGridView;
         public const int PageSize = 200;
+        private string sortedColumn;
+        private bool ascending;
         private IProcessor processor;
         private const string labelText = "Time elapsed: {0}. Rows fetched: {1}";
+        private string filteredColumn = "";
+        private string filteredValue = "";
+        private TextBox filterBox;
 
 
         public MainForm()
@@ -54,8 +59,11 @@ namespace DBMS
             if (dataGridView != null)
             {
                 if (dataGridView.VirtualMode)
+                {
                     dataGridView.CellValueNeeded -= DataGridView_CellValueNeeded;
-
+                    dataGridView.ColumnHeaderMouseClick -= DataGridView_ColumnHeaderMouseClick;
+                    dataGridView.ColumnHeaderMouseDoubleClick -= DataGridView_ColumnHeaderMouseDoubleClick;
+                }
                 this.Controls.Remove(dataGridView);
                 dataGridView.Dispose();
             }
@@ -80,12 +88,13 @@ namespace DBMS
             dataGridView.ShowRowErrors = false;
             dataGridView.TabIndex = 3;
             dataGridView.VirtualMode = isVirtual;
-            
 
             if (isVirtual)
             {
                 CreateColumns();
                 dataGridView.CellValueNeeded += DataGridView_CellValueNeeded;
+                dataGridView.ColumnHeaderMouseClick += DataGridView_ColumnHeaderMouseClick;
+                dataGridView.ColumnHeaderMouseDoubleClick += DataGridView_ColumnHeaderMouseDoubleClick;
             }
 
             this.panel.Controls.Add(dataGridView);
@@ -93,6 +102,65 @@ namespace DBMS
             ((ISupportInitialize)(dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.Invalidate();
+        }
+
+        private void DataGridView_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            filterBox = new TextBox();
+             Rectangle rect = dataGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+            
+            filterBox.Location = new Point(rect.Location.X, rect.Location.Y + rect.Height / 2);
+            filterBox.Width = 200;
+
+            filterBox.Text = filteredColumn == dataGridView.Columns[e.ColumnIndex].Name ? filteredValue : "";
+            filteredColumn = dataGridView.Columns[e.ColumnIndex].Name;
+
+            this.Controls.Add(filterBox);
+            filterBox.BringToFront();
+            filterBox.Select();
+            filterBox.Focus();
+            filterBox.LostFocus += (focusSender, args) =>
+                          {
+                              string enteredText = filterBox.Text;
+                              this.Controls.Remove(filterBox);
+                              filterBox.Dispose();
+                              filterBox = null;
+
+                              if (filteredValue != enteredText)
+                              {
+                                  filteredValue = enteredText;
+                                  RefreshGrid();
+                              }
+                          };
+        }
+
+        private void RefreshGrid()
+        {
+            dataGridView.RowCount = 0;
+            dataGridView.Refresh();
+
+            processor.SetFilterAndSort(sortedColumn, filteredColumn, filteredValue, ascending);
+
+            dataGridView.RowCount = processor.GetRowCount();
+        }
+
+        private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                string columnName = dataGridView.Columns[e.ColumnIndex].Name;
+
+                if (sortedColumn.Contains(columnName))
+                {
+                    ascending = !ascending;
+                }
+                else
+                    ascending = true;
+
+                sortedColumn = columnName;
+
+                RefreshGrid();
+            }
         }
 
         private void DataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
@@ -200,7 +268,7 @@ namespace DBMS
             gvC1.HeaderText = "Operation";
             gvC1.Name = "Operation";
             gvC1.Width = 130;
-            
+
 
 
             gvC2.HeaderText = "Batch";
