@@ -79,6 +79,7 @@ namespace DBMS
             dataGridView.ShowRowErrors = false;
             dataGridView.TabIndex = 3;
             dataGridView.VirtualMode = isVirtual;
+            
 
             if (isVirtual)
             {
@@ -122,6 +123,8 @@ namespace DBMS
         private void fixedPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
+
+            CreateProcessorAndRefresh(ProcessorType.PaggingProcessor, Query.PaggingQuery, dataGridView.ColumnCount);
         }
 
         private void paggingViewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -196,7 +199,7 @@ namespace DBMS
             gvC1.HeaderText = "Operation";
             gvC1.Name = "Operation";
             gvC1.Width = 130;
-
+            
 
 
             gvC2.HeaderText = "Batch";
@@ -459,8 +462,7 @@ namespace DBMS
             gvC50.Name = "ChargeStatus";
             gvC50.Width = 130;
 
-
-            this.dataGridView.Columns.AddRange(new DataGridViewColumn[] {
+            DataGridViewColumn[] columnRange = new DataGridViewColumn[] {
             gvC1,
             gvC2,
             gvC3,
@@ -510,7 +512,10 @@ namespace DBMS
             gvC47,
             gvC48,
             gvC49,
-            gvC50});
+            gvC50};
+
+            columnRange.ToList().ForEach(c => c.SortMode = DataGridViewColumnSortMode.Programmatic);
+            this.dataGridView.Columns.AddRange(columnRange);
 
         }
     }

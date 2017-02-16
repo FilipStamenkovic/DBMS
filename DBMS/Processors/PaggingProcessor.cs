@@ -20,6 +20,9 @@ namespace DBMS.Processors
         private string query;
         private int columnCount;
         private Stopwatch stopwatch;
+        private Dictionary<string, string> columnMapper;
+        private string whereConditions;
+        private string sortMode;
 
         public event QueryExecuted QueryExecuted;
 
@@ -29,6 +32,21 @@ namespace DBMS.Processors
             pageNumber = -1;
             this.columnCount = columnCount;
             stopwatch = new Stopwatch();
+
+            columnMapper = new Dictionary<string, string>();
+            columnMapper.Add("Operation", "ppo.ExternalId");
+            columnMapper.Add("Batch", "pop1.Value");
+            columnMapper.Add("BatchType", "pop2.Value");
+            columnMapper.Add("BatchSegment", "pp6.Value");
+            columnMapper.Add("BatchLot", "pp7.Value");
+            columnMapper.Add("PowderCharge", "pop3.Value");
+            columnMapper.Add("TestPlan", "cv.Name");
+            columnMapper.Add("TestPlanRevision", "cv.Revision");
+            columnMapper.Add("Material", "cvMI.code");
+            columnMapper.Add("MaterialDescription", "cvMI.ItemDescription");
+            columnMapper.Add("VaristorType", "mip1.Value");
+            columnMapper.Add("VarDiameter", "mip2.Value");
+            columnMapper.Add("VarHeight", "mip3.Value");
         }
 
         public void Dispose()
@@ -60,8 +78,8 @@ namespace DBMS.Processors
             using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand();
-               
-                cmd.CommandText = string.Format(query, startIndex, pageSize, long.MaxValue);
+                cmd.CommandTimeout = 150;
+                cmd.CommandText = string.Format(query, startIndex, pageSize, whereConditions, sortMode);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = sqlConnection1;
 
@@ -82,7 +100,7 @@ namespace DBMS.Processors
             }
 
             stopwatch.Stop();
-            
+
             QueryExecuted.Invoke(stopwatch.Elapsed.TotalSeconds, results.Count);
             return results;
         }
