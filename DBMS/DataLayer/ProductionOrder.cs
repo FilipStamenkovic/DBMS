@@ -12,7 +12,7 @@ namespace DBMS.DataLayer
         public ProductionOrder()
         {
             ProductionOrderProperties = new HashSet<ProductionOrderProperty>();
-            ProductionOrders1 = new HashSet<ProductionOrder>();
+            Children = new HashSet<ProductionOrder>();
             Products = new HashSet<Product>();
         }
 
