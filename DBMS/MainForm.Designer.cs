@@ -43,8 +43,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel = new System.Windows.Forms.Panel();
-            this.initialPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fixedPaggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -170,19 +168,6 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(808, 477);
             this.panel.TabIndex = 3;
-            // 
-            // initialPaggingToolStripMenuItem
-            // 
-            this.initialPaggingToolStripMenuItem.Name = "initialPaggingToolStripMenuItem";
-            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.initialPaggingToolStripMenuItem.Text = "Initial pagging";
-            this.initialPaggingToolStripMenuItem.Click += new System.EventHandler(this.initialPaggingToolStripMenuItem_Click);
-            // 
-            // fixedPaggingToolStripMenuItem
-            // 
-            this.fixedPaggingToolStripMenuItem.Name = "fixedPaggingToolStripMenuItem";
-            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fixedPaggingToolStripMenuItem.Text = "Fixed pagging";
             // 
             // MainForm
             // 

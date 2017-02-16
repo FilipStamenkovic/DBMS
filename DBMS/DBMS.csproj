@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="DataLayer\ConfigurationVariant.cs" />
     <Compile Include="DataLayer\DBModel.cs" />
+    <Compile Include="DataLayer\DisplayResult.cs" />
     <Compile Include="DataLayer\MaterialClass.cs" />
     <Compile Include="DataLayer\MaterialItem.cs" />
     <Compile Include="DataLayer\MaterialItemProperty.cs" />

@@ -63,9 +63,9 @@ namespace DBMS.DataLayer
         public virtual ICollection<ProductionOrderProperty> ProductionOrderProperties { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductionOrder> ProductionOrders1 { get; set; }
+        public virtual ICollection<ProductionOrder> Children { get; set; }
 
-        public virtual ProductionOrder ProductionOrder1 { get; set; }
+        public virtual ProductionOrder Parent { get; set; }
 
         public virtual ProductType ProductType { get; set; }
 
