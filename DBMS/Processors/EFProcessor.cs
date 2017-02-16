@@ -84,6 +84,11 @@ namespace DBMS.Processors
             throw new NotImplementedException("Use only in virtual mode with GetCellValue()!");
         }
 
+        public void SetFilterAndSort(string sort, string filterColumn, string filterValue, bool ascending)
+        {
+            throw new NotImplementedException();
+        }
+
         public int GetRowCount()
         {
             throw new NotImplementedException();

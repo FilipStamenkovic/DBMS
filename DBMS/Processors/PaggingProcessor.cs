@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Data.Entity;
+using DBMS.Queries;
 
 namespace DBMS.Processors
 {
@@ -18,6 +19,7 @@ namespace DBMS.Processors
         private List<object[]> data;
         private int pageNumber;
         private string query;
+        private string queryCount;
         private int columnCount;
         private Stopwatch stopwatch;
         private Dictionary<string, string> columnMapper;
@@ -29,7 +31,7 @@ namespace DBMS.Processors
         public PaggingProcessor(string query, int columnCount)
         {
             this.query = query;
-            pageNumber = -1;
+            queryCount = query == Query.PaggingQuery ? Query.PaggingQueryCount : "";
             this.columnCount = columnCount;
             stopwatch = new Stopwatch();
 
@@ -124,9 +126,60 @@ namespace DBMS.Processors
 
         public int GetRowCount()
         {
-            using (var db = new DBModel())
+            pageNumber = -1;
+            data = null;
+            if (string.IsNullOrEmpty(queryCount))
+                using (var db = new DBModel())
+                {
+                    return db.TestResults.Where(x => x.Valid).Count();
+                }
+            else
             {
-                return db.TestResults.Where(x => x.Valid).Count();
+                int size = 0;
+
+                using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandTimeout = 150;
+                    cmd.CommandText = string.Format(queryCount, whereConditions);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = sqlConnection1;
+
+                    sqlConnection1.Open();
+                    data = new List<object[]>();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            size = reader.GetInt32(0);
+                        }
+                    }
+                    sqlConnection1.Close();
+                }
+
+                return size;
+            }
+        }
+
+        public void SetFilterAndSort(string sort, string filterColumn, string filterValue, bool ascending)
+        {
+            if (!string.IsNullOrEmpty(sort))
+            {
+                string sortColumn = columnMapper.ContainsKey(sort) ? columnMapper[sort] : "t." + sort;
+                sortMode = sortColumn + (ascending ? " asc" : " desc");
+            }
+            else
+            {
+                sortMode = "";
+            }
+            if (!string.IsNullOrEmpty(filterColumn))
+            {
+                filterColumn = columnMapper.ContainsKey(filterColumn) ? columnMapper[filterColumn] : "t." + filterColumn;
+                whereConditions = " and " + filterColumn + " LIKE '%" + filterValue + "%' ";
+            }
+            else
+            {
+                whereConditions = "";
             }
         }
     }
