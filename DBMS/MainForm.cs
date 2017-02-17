@@ -35,18 +35,20 @@ namespace DBMS
             dataGridView = null;
         }
 
-        private void CreateProcessorAndRefresh(ProcessorType processorType, string query, int columnCount)
+        private void SetProcessorAndRefresh(IProcessor processorType)
         {
             if (processor != null)
             {
                 processor.Dispose();
                 processor.QueryExecuted -= Processor_QueryExecuted;
             }
-
-            if (processorType == ProcessorType.EFProcessor)
-                processor = new EFProcessor(dataGridView);
-            else if (processorType == ProcessorType.PaggingProcessor)
-                processor = new PaggingProcessor(query, columnCount);
+            this.processor = processorType;
+            //if (processorType == ProcessorType.EFProcessor)
+            //    processor = new EFProcessor(dataGridView);
+            //else if (processorType == ProcessorType.PaggingProcessor)
+            //    processor = new PaggingProcessor(query, columnCount, queryCount);
+            //else if (processorType == ProcessorType.ViewProcessor)
+            //    processor = new ViewProcessor(query, columnCount, queryCount);
 
             processor.QueryExecuted += Processor_QueryExecuted;
 
@@ -107,8 +109,8 @@ namespace DBMS
         private void DataGridView_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             filterBox = new TextBox();
-             Rectangle rect = dataGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
-            
+            Rectangle rect = dataGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+
             filterBox.Location = new Point(rect.Location.X, rect.Location.Y + rect.Height / 2);
             filterBox.Width = 200;
 
@@ -150,7 +152,7 @@ namespace DBMS
             {
                 string columnName = dataGridView.Columns[e.ColumnIndex].Name;
 
-                if (sortedColumn.Contains(columnName))
+                if (!string.IsNullOrEmpty(sortedColumn) && sortedColumn.Contains(columnName))
                 {
                     ascending = !ascending;
                 }
@@ -181,7 +183,7 @@ namespace DBMS
         private void eFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
-            CreateProcessorAndRefresh(ProcessorType.EFProcessor, null, dataGridView.ColumnCount);
+            SetProcessorAndRefresh(new EFProcessor(dataGridView));
         }
 
         private void Processor_QueryExecuted(double time, int rowCount)
@@ -193,12 +195,13 @@ namespace DBMS
         {
             CreateDataGridView(true);
 
-            CreateProcessorAndRefresh(ProcessorType.PaggingProcessor, Query.PaggingQuery, dataGridView.ColumnCount);
+            SetProcessorAndRefresh(new PaggingProcessor(Query.PaggingQuery, dataGridView.ColumnCount, Query.PaggingQueryCount));
         }
 
         private void paggingViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
+            SetProcessorAndRefresh(new ViewProcessor(Query.ViewQuery, dataGridView.ColumnCount, Query.ViewCount));
         }
 
         private void fToolStripMenuItem_Click(object sender, EventArgs e)
@@ -209,7 +212,7 @@ namespace DBMS
         private void initialPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
-            CreateProcessorAndRefresh(ProcessorType.PaggingProcessor, Query.InitialQuery, dataGridView.ColumnCount);
+            SetProcessorAndRefresh(new PaggingProcessor(Query.InitialQuery, dataGridView.ColumnCount, null));
         }
 
         private void CreateColumns()

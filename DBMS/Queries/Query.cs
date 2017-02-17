@@ -30,7 +30,43 @@ mip1.Value AS VaristorType,
 mip2.Value AS VarDiameter,
 mip3.Value AS VarHeight
 
-      ,TestResult.*
+      ,TestResult.[TestTs]
+      ,TestResult.[ProductSerial]
+      ,TestResult.[TestStatus]
+      ,TestResult.[Class1]
+      ,TestResult.[Class2]
+      ,TestResult.[TestTemperature]
+      ,TestResult.[DCTs]
+      ,TestResult.[DCParam1]
+      ,TestResult.[DCParam2]
+      ,TestResult.[DCParam3]
+      ,TestResult.[DCParam4]
+      ,TestResult.[DCParam5]
+      ,TestResult.[DCParam6]
+      ,TestResult.[DCParam7]
+      ,TestResult.[DCParam8]
+      ,TestResult.[DCAlpha]
+      ,TestResult.[DCStatus]
+      ,TestResult.[ACTs]
+      ,TestResult.[ACParam1]
+      ,TestResult.[ACParam2]
+      ,TestResult.[ACParam3]
+      ,TestResult.[ACParam4]
+      ,TestResult.[ACParam5]
+      ,TestResult.[ACStatus]
+      ,TestResult.[RestTs]
+      ,TestResult.[RestParam1]
+      ,TestResult.[RestParam2]
+      ,TestResult.[RestParam3]
+      ,TestResult.[RestParam4]
+      ,TestResult.[RestParam5]
+      ,TestResult.[RestParam6]
+      ,TestResult.[RestStatus]
+      ,TestResult.[ChargeTs]
+      ,TestResult.[ChargeParam1]
+      ,TestResult.[ChargeParam2]
+      ,TestResult.[ChargeParam3]
+      ,TestResult.[ChargeStatus]
 
 FROM
 	(
@@ -84,29 +120,26 @@ FROM
 	left join MaterialItemProperties mip1 on cvMI.id = mip1.MaterialItemId and mip1.MaterialClassId in (select Id from MaterialClasses where Name = 'Var_Typ')
 	left join MaterialItemProperties mip2 on cvMI.id = mip2.MaterialItemId and mip2.MaterialClassId in (select Id from MaterialClasses where Name = 'Diameter')
 	left join MaterialItemProperties mip3 on cvMI.id = mip3.MaterialItemId and mip3.MaterialClassId in (select Id from MaterialClasses where Name = 'Height')
+";
 
-order by TestResult.Id";
+        public const string PaggingQuery = @"with TestIds as (Select
+t.Id as TestResultId,
+ppo.Id as OperationId,
+pop1.Id AS BatchId,
+pop2.Id AS BatchTypeId,
 
-        public const string PaggingQuery = @"Select distinct
-ppo.ExternalId as Operation,
-pop1.Value AS Batch,
-pop2.Value AS BatchType,
+pp6.Id AS BatchSegmentId,
+pp7.Id AS BatchLotId,
 
-pp6.Value AS BatchSegment,
-pp7.Value AS BatchLot,
+pop3.Id AS PowderChargeId,
 
-pop3.Value AS PowderCharge,
+cv.Id AS TestPlanId,
 
-cv.Name AS TestPlan,
-cv.Revision AS TestPlanRevision,
+cvMI.Id AS MaterialId,
 
-cvMI.code AS Material,
-cvMI.ItemDescription AS MaterialDescription,
-
-mip1.Value AS VaristorType,
-mip2.Value AS VarDiameter,
-mip3.Value AS VarHeight,
-  t.*
+mip1.Id AS VaristorTypeId,
+mip2.Id AS VarDiameterId,
+mip3.Id AS VarHeightId
 		    from
 			
 				TestResults t 
@@ -135,21 +168,95 @@ mip3.Value AS VarHeight,
 				
 			t.valid = 1
             {2}
-order by {3}  t.Id 
+order by {3} t.Id 
 OFFSET {0} ROWS
-FETCH NEXT {1} ROWS ONLY";
+FETCH NEXT {1} ROWS ONLY)
 
-        public const string PaggingQueryCount = @"Select count(*)
+Select
+ppo.ExternalId as Operation,
+pop1.Value AS Batch,
+pop2.Value AS BatchType,
+
+pp6.Value AS BatchSegment,
+pp7.Value AS BatchLot,
+
+pop3.Value AS PowderCharge,
+
+cv.Name AS TestPlan,
+cv.Revision AS TestPlanRevision,
+
+cvMI.code AS Material,
+cvMI.ItemDescription AS MaterialDescription,
+
+mip1.Value AS VaristorType,
+mip2.Value AS VarDiameter,
+mip3.Value AS VarHeight
+      ,t.[TestTs]
+      ,t.[ProductSerial]
+      ,t.[TestStatus]
+      ,t.[Class1]
+      ,t.[Class2]
+      ,t.[TestTemperature]
+      ,t.[DCTs]
+      ,t.[DCParam1]
+      ,t.[DCParam2]
+      ,t.[DCParam3]
+      ,t.[DCParam4]
+      ,t.[DCParam5]
+      ,t.[DCParam6]
+      ,t.[DCParam7]
+      ,t.[DCParam8]
+      ,t.[DCAlpha]
+      ,t.[DCStatus]
+      ,t.[ACTs]
+      ,t.[ACParam1]
+      ,t.[ACParam2]
+      ,t.[ACParam3]
+      ,t.[ACParam4]
+      ,t.[ACParam5]
+      ,t.[ACStatus]
+      ,t.[RestTs]
+      ,t.[RestParam1]
+      ,t.[RestParam2]
+      ,t.[RestParam3]
+      ,t.[RestParam4]
+      ,t.[RestParam5]
+      ,t.[RestParam6]
+      ,t.[RestStatus]
+      ,t.[ChargeTs]
+      ,t.[ChargeParam1]
+      ,t.[ChargeParam2]
+      ,t.[ChargeParam3]
+      ,t.[ChargeStatus]
+		    from
+			
+				TestIds ids
+				join TestResults t on t.Id = ids.TestResultId
+
+				join ProductionOrders ppo on ppo.Id = ids.OperationId
+				join ProductionOrderProperties pop1 on pop1.Id = ids.BatchId
+				join ProductionOrderProperties pop2 on pop2.Id = ids.BatchTypeId
+				join ProductionOrderProperties pop3 on pop3.Id = ids.PowderChargeId
+				left join ProductProperties pp6 on (pp6.Id =  ids.BatchSegmentId)
+				left join ProductProperties pp7 on (pp7.Id =  ids.BatchLotId )
+			
+				left join ConfigurationVariants cv on cv.Id = ids.TestPlanId
+				left join MaterialItems cvMI on cvMI.Id = ids.MaterialId
+
+				left join MaterialItemPropertIes mip1 on mip1.Id = ids.VaristorTypeId
+				left join MaterialItemPropertIes mip2 on mip2.Id = ids.VarDiameterId
+				left join MaterialItemProperties mip3 on mip3.Id = ids.VarHeightId
+            
+order by {3} t.Id ";
+
+        public const string PaggingQueryCount = @"Select
+count(*)
 		    from
 			
 				TestResults t 
 				join Products prod on t.ProductSerial = prod.SerialNumber  
-				--Products prod
-				--join Products parent on parent.Id = prod.ParentId
 				
-				join ProductTypes pt on pt.Id = prod.ProductTypeId and pt.Name = 'Varistor'
-				
-				--join TestResults t on t.ProductSerial = prod.SerialNumber and t.Valid = 1
+				join ProductTypes pt on pt.Id = prod.ProductTypeId and pt.Name = 'Varistor'				
 				
 				join ProductionOrders prodOrder on prodOrder.Id = prod.ProductionOrderId
 				join ProductionOrders ppo on ppo.Id = prodOrder.ParentId
@@ -173,5 +280,66 @@ FETCH NEXT {1} ROWS ONLY";
 			t.valid = 1
             {0}
 ";
+        public const string ViewCount = @"select count(*) from pagging_view p {0}";
+        public const string ViewQuery = @"with pg as (SELECT
+    p.id
+  FROM [DB].[dbo].[pagging_view] p
+	order by {2} p.id
+  offset {0} rows fetch next {1} rows only)
+
+  select 
+[Operation]
+      ,p.[Batch]
+      ,p.[BatchType]
+      ,p.[BatchSegment]
+      ,p.[BatchLot]
+      ,p.[PowderCharge]
+      ,p.[TestPlan]
+      ,p.[TestPlanRevision]
+      ,p.[Material]
+      ,p.[MaterialDescription]
+      ,p.[VaristorType]
+      ,p.[VarDiameter]
+      ,p.[VarHeight]
+      ,p.[TestTs]
+      ,p.[ProductSerial]
+      ,p.[TestStatus]
+      ,p.[Class1]
+      ,p.[Class2]
+      ,p.[TestTemperature]
+      ,p.[DCTs]
+      ,p.[DCParam1]
+      ,p.[DCParam2]
+      ,p.[DCParam3]
+      ,p.[DCParam4]
+      ,p.[DCParam5]
+      ,p.[DCParam6]
+      ,p.[DCParam7]
+      ,p.[DCParam8]
+      ,p.[DCAlpha]
+      ,p.[DCStatus]
+      ,p.[ACTs]
+      ,p.[ACParam1]
+      ,p.[ACParam2]
+      ,p.[ACParam3]
+      ,p.[ACParam4]
+      ,p.[ACParam5]
+      ,p.[ACStatus]
+      ,p.[RestTs]
+      ,p.[RestParam1]
+      ,p.[RestParam2]
+      ,p.[RestParam3]
+      ,p.[RestParam4]
+      ,p.[RestParam5]
+      ,p.[RestParam6]
+      ,p.[RestStatus]
+      ,p.[ChargeTs]
+      ,p.[ChargeParam1]
+      ,p.[ChargeParam2]
+      ,p.[ChargeParam3]
+      ,p.[ChargeStatus]
+from pagging_view p 
+  inner join pg on pg.id = p.id
+  order by {2} p.Id";
     }    
 }

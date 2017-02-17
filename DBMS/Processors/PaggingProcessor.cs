@@ -28,10 +28,10 @@ namespace DBMS.Processors
 
         public event QueryExecuted QueryExecuted;
 
-        public PaggingProcessor(string query, int columnCount)
+        public PaggingProcessor(string query, int columnCount, string queryCount)
         {
             this.query = query;
-            queryCount = query == Query.PaggingQuery ? Query.PaggingQueryCount : "";
+            this.queryCount = queryCount;
             this.columnCount = columnCount;
             stopwatch = new Stopwatch();
 
@@ -166,7 +166,7 @@ namespace DBMS.Processors
             if (!string.IsNullOrEmpty(sort))
             {
                 string sortColumn = columnMapper.ContainsKey(sort) ? columnMapper[sort] : "t." + sort;
-                sortMode = sortColumn + (ascending ? " asc" : " desc");
+                sortMode = sortColumn + (ascending ? " asc, " : " desc, ");
             }
             else
             {
