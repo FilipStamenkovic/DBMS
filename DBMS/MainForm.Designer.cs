@@ -30,6 +30,7 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.turnIndexONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridFilteringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,15 +66,23 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.turnIndexONToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // turnIndexONToolStripMenuItem
+            // 
+            this.turnIndexONToolStripMenuItem.Name = "turnIndexONToolStripMenuItem";
+            this.turnIndexONToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.turnIndexONToolStripMenuItem.Text = "Turn Index ON";
+            this.turnIndexONToolStripMenuItem.Click += new System.EventHandler(this.turnIndexONToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -103,14 +112,14 @@
             // initialPaggingToolStripMenuItem
             // 
             this.initialPaggingToolStripMenuItem.Name = "initialPaggingToolStripMenuItem";
-            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.initialPaggingToolStripMenuItem.Text = "Initial pagging";
             this.initialPaggingToolStripMenuItem.Click += new System.EventHandler(this.initialPaggingToolStripMenuItem_Click);
             // 
             // fixedPaggingToolStripMenuItem
             // 
             this.fixedPaggingToolStripMenuItem.Name = "fixedPaggingToolStripMenuItem";
-            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.fixedPaggingToolStripMenuItem.Text = "Fixed pagging";
             this.fixedPaggingToolStripMenuItem.Click += new System.EventHandler(this.fixedPaggingToolStripMenuItem_Click);
             // 
@@ -156,8 +165,7 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // panel
             // 
@@ -169,19 +177,6 @@
             this.panel.Size = new System.Drawing.Size(808, 477);
             this.panel.TabIndex = 3;
             // 
-            // initialPaggingToolStripMenuItem
-            // 
-            this.initialPaggingToolStripMenuItem.Name = "initialPaggingToolStripMenuItem";
-            this.initialPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.initialPaggingToolStripMenuItem.Text = "Initial pagging";
-            this.initialPaggingToolStripMenuItem.Click += new System.EventHandler(this.initialPaggingToolStripMenuItem_Click);
-            // 
-            // fixedPaggingToolStripMenuItem
-            // 
-            this.fixedPaggingToolStripMenuItem.Name = "fixedPaggingToolStripMenuItem";
-            this.fixedPaggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.fixedPaggingToolStripMenuItem.Text = "Fixed pagging";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -192,7 +187,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "MainForm";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -219,6 +214,7 @@
         private System.Windows.Forms.Panel panel;
         private System.Windows.Forms.ToolStripMenuItem initialPaggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixedPaggingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem turnIndexONToolStripMenuItem;
     }
 }
 

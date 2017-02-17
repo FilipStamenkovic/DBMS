@@ -7,8 +7,8 @@ namespace DBMS.DataLayer
 
     public partial class DBModel : DbContext
     {
-        public DBModel()
-            : base("name=DBConnection")
+        public DBModel(string connectionName)
+            : base(connectionName)
         {
         }
 

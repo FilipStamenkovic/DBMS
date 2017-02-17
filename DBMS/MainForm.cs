@@ -27,12 +27,16 @@ namespace DBMS
         private string filteredColumn = "";
         private string filteredValue = "";
         private TextBox filterBox;
+        private bool IndexOn = false;
+        public static event DbConnectionChanged ConnectionChaged;
 
+        public static string ConnectionName { get; internal set; }
 
         public MainForm()
         {
             InitializeComponent();
             dataGridView = null;
+            ConnectionName = "name=DBConnection";
         }
 
         private void CreateProcessorAndRefresh(ProcessorType processorType, string query, int columnCount)
@@ -587,5 +591,24 @@ namespace DBMS
             this.dataGridView.Columns.AddRange(columnRange);
 
         }
+
+        private void turnIndexONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!IndexOn)
+            {
+                turnIndexONToolStripMenuItem.Text = "Turn Index OFF";
+                ConnectionName = "name=DB_IndexedConnection";
+            }
+            else
+            {
+                turnIndexONToolStripMenuItem.Text = "Turn Index ON";
+                ConnectionName = "name=DBConnection";
+            }
+
+            IndexOn = !IndexOn;
+            ConnectionChaged.Invoke(ConnectionName);
+        }
     }
+
+    public delegate void DbConnectionChanged(string connectionName);
 }

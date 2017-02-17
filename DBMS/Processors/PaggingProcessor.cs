@@ -129,7 +129,7 @@ namespace DBMS.Processors
             pageNumber = -1;
             data = null;
             if (string.IsNullOrEmpty(queryCount))
-                using (var db = new DBModel())
+                using (var db = new DBModel(MainForm.ConnectionName))
                 {
                     return db.TestResults.Where(x => x.Valid).Count();
                 }
