@@ -606,7 +606,9 @@ namespace DBMS
             }
 
             IndexOn = !IndexOn;
-            ConnectionChaged.Invoke(ConnectionName);
+
+            if(ConnectionChaged != null)
+                ConnectionChaged.Invoke(ConnectionName);
         }
     }
 
