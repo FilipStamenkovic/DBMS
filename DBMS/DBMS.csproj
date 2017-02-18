@@ -75,6 +75,7 @@
     <Compile Include="DataLayer\ProductProperty.cs" />
     <Compile Include="DataLayer\ProductType.cs" />
     <Compile Include="DataLayer\TestResult.cs" />
+    <Compile Include="Helpers\DataGridViewHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

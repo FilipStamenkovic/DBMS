@@ -21,13 +21,32 @@ namespace DBMS.Processors
         private Stopwatch stopwatch;
         private string whereConditions;
         private string sortMode;
+        private Dictionary<string, string> columnMapper;
 
-        public ViewProcessor(string query, int columnCount, string queryCount)
+        public ViewProcessor(string query, int columnCount, string queryCount, bool oneJoin)
         {
             this.query = query;
             this.columnCount = columnCount;
             this.queryCount = queryCount;
             stopwatch = new Stopwatch();
+
+            columnMapper = new Dictionary<string, string>();
+            if (oneJoin)
+            {
+                columnMapper.Add("Operation", "");
+                columnMapper.Add("Batch", "");
+                columnMapper.Add("BatchType", "");
+                columnMapper.Add("BatchSegment", "");
+                columnMapper.Add("BatchLot", "");
+                columnMapper.Add("PowderCharge", "");
+                columnMapper.Add("TestPlan", "");
+                columnMapper.Add("TestPlanRevision", "");
+                columnMapper.Add("Material", "");
+                columnMapper.Add("MaterialDescription", "");
+                columnMapper.Add("VaristorType", "");
+                columnMapper.Add("VarDiameter", "");
+                columnMapper.Add("VarHeight", "");
+            }
 
         }
         public event QueryExecuted QueryExecuted;
@@ -125,7 +144,7 @@ namespace DBMS.Processors
         {
             if (!string.IsNullOrEmpty(sort))
             {
-                string sortColumn = "p." + sort;
+                string sortColumn = (columnMapper.ContainsKey(sort) || columnMapper.Count == 0 ? "p." : "r.") + sort;
                 sortMode = sortColumn + (ascending ? " asc, " : " desc, ");
             }
             else
@@ -134,7 +153,8 @@ namespace DBMS.Processors
             }
             if (!string.IsNullOrEmpty(filterColumn))
             {
-                filterColumn = "p." + filterColumn;
+                filterColumn = ((columnMapper.ContainsKey(filterColumn) || columnMapper.Count == 0) ? "p." : "r.") +
+                    filterColumn;
                 whereConditions = "where " + filterColumn + " LIKE '%" + filterValue + "%' ";
             }
             else
