@@ -645,7 +645,7 @@ namespace DBMS
                 if (UseDisplayResultsChanged != null)
                     UseDisplayResultsChanged.Invoke(true);
 
-                RefreshGrid();
+                dataGridView.RowCount = processor.GetRowCount();
             }
 
             if(dataGridView == null || !(processor is EFProcessor))
@@ -664,7 +664,7 @@ namespace DBMS
                 if (UseDisplayResultsChanged != null)
                     UseDisplayResultsChanged.Invoke(true);
 
-                RefreshGrid();
+                dataGridView.RowCount = processor.GetRowCount();
             }
 
             if (dataGridView == null || !(processor is EFProcessor))
