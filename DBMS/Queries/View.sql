@@ -1,6 +1,6 @@
 ﻿create view
 
-[dbo].[pagging_view]
+[dbo].[PaggingView]
 
 as
 
@@ -54,3 +54,12 @@ mip3.Value AS VarHeight,
 
 GO
 
+
+--Create table DisplayResults
+select ROW_NUMBER() OVER(ORDER BY pv.Id ASC) as Id, pv.Operation, pv.Batch, pv.BatchType, pv.BatchSegment, pv.BatchLot, pv.PowderCharge, pv.TestPlan
+	, pv.TestPlanRevision, pv.Material, pv.MaterialDescription, pv.VaristorType, pv.VarDiameter, pv.VarHeight, pv.Id as TestResultId
+into 
+DisplayResults 
+from 
+PaggingView pv;
+----------------------------
