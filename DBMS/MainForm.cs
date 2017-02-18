@@ -233,6 +233,7 @@ namespace DBMS
         private void fToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
+            SetProcessorAndRefresh(new ViewProcessor(Query.OneTableSqlQuery, dataGridView.ColumnCount, Query.OneTableSqlCount));
         }
 
         private void initialPaggingToolStripMenuItem_Click(object sender, EventArgs e)
