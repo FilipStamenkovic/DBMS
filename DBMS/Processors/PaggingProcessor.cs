@@ -77,11 +77,12 @@ namespace DBMS.Processors
             List<object[]> results = new List<object[]>();
             stopwatch.Restart();
 
-            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
+            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings[MainForm.ConnectionName].ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandTimeout = 150;
-                cmd.CommandText = string.Format(query, startIndex, pageSize, whereConditions, sortMode);
+                int secondParam = queryCount == null ? startIndex + pageSize : pageSize;
+                cmd.CommandText = string.Format(query, startIndex, secondParam, whereConditions, sortMode);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = sqlConnection1;
 
@@ -129,7 +130,7 @@ namespace DBMS.Processors
             pageNumber = -1;
             data = null;
             if (string.IsNullOrEmpty(queryCount))
-                using (var db = new DBModel())
+                using (var db = new DBModel(MainForm.ConnectionName))
                 {
                     return db.TestResults.Where(x => x.Valid).Count();
                 }
@@ -137,7 +138,7 @@ namespace DBMS.Processors
             {
                 int size = 0;
 
-                using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
+                using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings[MainForm.ConnectionName].ConnectionString))
                 {
                     SqlCommand cmd = new SqlCommand();
                     cmd.CommandTimeout = 150;

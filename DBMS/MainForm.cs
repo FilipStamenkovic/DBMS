@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,12 +28,20 @@ namespace DBMS
         private string filteredColumn = "";
         private string filteredValue = "";
         private TextBox filterBox;
+        private bool IndexOn = false;
+        private ScrollBar s;
+        public static event DbConnectionChanged ConnectionChaged;
 
+        public static string ConnectionName { get; internal set; }
 
         public MainForm()
         {
             InitializeComponent();
             dataGridView = null;
+            ConnectionName = "DBConnection";
+
+            
+
         }
 
         private void SetProcessorAndRefresh(IProcessor processorType)
@@ -65,6 +74,7 @@ namespace DBMS
                     dataGridView.CellValueNeeded -= DataGridView_CellValueNeeded;
                     dataGridView.ColumnHeaderMouseClick -= DataGridView_ColumnHeaderMouseClick;
                     dataGridView.ColumnHeaderMouseDoubleClick -= DataGridView_ColumnHeaderMouseDoubleClick;
+                    s.Scroll -= new ScrollEventHandler(DataGridView_Scroll);
                 }
                 this.Controls.Remove(dataGridView);
                 dataGridView.Dispose();
@@ -74,7 +84,8 @@ namespace DBMS
 
             ((ISupportInitialize)(dataGridView)).BeginInit();
             this.SuspendLayout();
-
+            
+           // dataGridView.Scroll += DataGridView_Scroll;
             dataGridView.ColumnHeadersVisible = true;
             dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToDeleteRows = false;
@@ -91,6 +102,12 @@ namespace DBMS
             dataGridView.TabIndex = 3;
             dataGridView.VirtualMode = isVirtual;
 
+            Type t = dataGridView.GetType();
+            PropertyInfo pi = t.GetProperty("VerticalScrollBar", BindingFlags.Instance | BindingFlags.NonPublic);
+            s = pi.GetValue(dataGridView, null) as ScrollBar;
+
+            s.Scroll += new ScrollEventHandler(DataGridView_Scroll);
+
             if (isVirtual)
             {
                 CreateColumns();
@@ -104,6 +121,18 @@ namespace DBMS
             ((ISupportInitialize)(dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.Invalidate();
+        }
+
+        private void DataGridView_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type != ScrollEventType.EndScroll)
+                //dataGridView.SuspendLayout();
+                dataGridView.CellValueNeeded -= DataGridView_CellValueNeeded;
+            else
+            {
+                dataGridView.CellValueNeeded += DataGridView_CellValueNeeded;
+                dataGridView.Refresh();
+            }            
         }
 
         private void DataGridView_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -213,6 +242,25 @@ namespace DBMS
         {
             CreateDataGridView(true);
             SetProcessorAndRefresh(new PaggingProcessor(Query.InitialQuery, dataGridView.ColumnCount, null));
+        }
+
+        private void turnIndexONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!IndexOn)
+            {
+                turnIndexONToolStripMenuItem.Text = "Turn Index OFF";
+                ConnectionName = "DB_IndexedConnection";
+            }
+            else
+            {
+                turnIndexONToolStripMenuItem.Text = "Turn Index ON";
+                ConnectionName = "DBConnection";
+            }
+
+            IndexOn = !IndexOn;
+
+            if (ConnectionChaged != null)
+                ConnectionChaged.Invoke(ConnectionName);
         }
 
         private void CreateColumns()
@@ -589,6 +637,8 @@ namespace DBMS
             columnRange.ToList().ForEach(c => c.SortMode = DataGridViewColumnSortMode.Programmatic);
             this.dataGridView.Columns.AddRange(columnRange);
 
-        }
+        }        
     }
+
+    public delegate void DbConnectionChanged(string connectionName);
 }

@@ -58,7 +58,7 @@ namespace DBMS.Processors
             List<object[]> results = new List<object[]>();
             stopwatch.Restart();
 
-            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
+            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings[MainForm.ConnectionName].ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandTimeout = 150;
@@ -98,7 +98,7 @@ namespace DBMS.Processors
         {
             int size = 0;
             pageNumber = -1;
-            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString))
+            using (SqlConnection sqlConnection1 = new SqlConnection(ConfigurationManager.ConnectionStrings[MainForm.ConnectionName].ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandTimeout = 150;

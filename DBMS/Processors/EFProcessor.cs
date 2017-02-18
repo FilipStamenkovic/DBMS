@@ -24,7 +24,7 @@ namespace DBMS.Processors
 
         public EFProcessor(DataGridView grid)
         {
-            dbModel = new DBModel();
+            dbModel = new DBModel("name=" + MainForm.ConnectionName);
             this.grid = grid;
             columnNames = new string[this.grid.Columns.Count];
             stopwatch = new Stopwatch();
@@ -35,6 +35,12 @@ namespace DBMS.Processors
                 columnNames[i] = this.grid.Columns[i].Name;
             }
 
+            MainForm.ConnectionChaged += MainForm_ConnectionChaged;
+            BuildQuery();
+        }
+
+        private void BuildQuery()
+        {
             /*order by product id*/
             //query = dbModel.TestResults.AsQueryable().OrderBy(tr => tr.ProductSerial)//.Skip(pageNumber * pageSize).Take(pageSize);
 
@@ -66,46 +72,83 @@ namespace DBMS.Processors
 
             var q1 = varistorProducts.Join(validTestResults, p => p.SerialNumber, tr => tr.ProductSerial
                 , (p, tr) => new { Product = p, TestResult = tr, TestPlanId = p.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "TestPlanId") });
-            
-            var q2 = q1.Select(a => new { Product = a.Product
-                , TestResult = a.TestResult
-                , TestPlanId = a.TestPlanId
-                , ConfigurationVariant = (a.TestPlanId == null) ? null : dbModel.ConfigurationVariants.FirstOrDefault(c => c.Id.ToString() == a.TestPlanId.Value)
-                , Batch = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "MOBatch").Value
-                , BatchType = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "ProductionVersion").Value
-                , BatchSegment = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "SegmentName").Value
-                , BatchLot = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "LayerName").Value
-                , PowderCharge = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "PowderCharge").Value
+
+            var q2 = q1.Select(a => new {
+                Product = a.Product
+                ,
+                TestResult = a.TestResult
+                ,
+                TestPlanId = a.TestPlanId
+                ,
+                ConfigurationVariant = (a.TestPlanId == null) ? null : dbModel.ConfigurationVariants.FirstOrDefault(c => c.Id.ToString() == a.TestPlanId.Value)
+                ,
+                Batch = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "MOBatch").Value
+                ,
+                BatchType = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "ProductionVersion").Value
+                ,
+                BatchSegment = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "SegmentName").Value
+                ,
+                BatchLot = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "LayerName").Value
+                ,
+                PowderCharge = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "PowderCharge").Value
             });
 
-            var q3 = q2.Select(a => new { Product = a.Product
-                , TestResult = a.TestResult
-                , TestPlanId = a.TestPlanId
-                , ConfigurationVariant = a.ConfigurationVariant
-                , Batch = a.Batch
-                , BatchType = a.BatchType
-                , BatchSegment = a.BatchSegment
-                , BatchLot = a.BatchLot
-                , PowderCharge = a.PowderCharge
-                , mip1 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Var_Typ")
-                , mip2 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Diameter")
-                , mip3 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Height")
+            var q3 = q2.Select(a => new {
+                Product = a.Product
+                ,
+                TestResult = a.TestResult
+                ,
+                TestPlanId = a.TestPlanId
+                ,
+                ConfigurationVariant = a.ConfigurationVariant
+                ,
+                Batch = a.Batch
+                ,
+                BatchType = a.BatchType
+                ,
+                BatchSegment = a.BatchSegment
+                ,
+                BatchLot = a.BatchLot
+                ,
+                PowderCharge = a.PowderCharge
+                ,
+                mip1 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Var_Typ")
+                ,
+                mip2 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Diameter")
+                ,
+                mip3 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Height")
             });
 
-            query = q3.OrderBy(a => a.Product.Id).Select(a => new DisplayResult{ Operation = a.Product.ProductionOrder.Parent.ExternalId
-                , Batch = a.Batch
-                , BatchType = a.BatchType
-                , BatchSegment = a.BatchSegment
-                , BatchLot = a.BatchLot
-                , PowderCharge = a.PowderCharge
-                , TestPlan = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Name
-                , TestPlanRevision = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Revision
-                , Material = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.Code
-                , MaterialDescription = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.ItemDescription
-                , VaristorType = a.mip1 == null ? null : a.mip1.Value
-                , VarDiameter = a.mip2 == null ? null : a.mip2.Value
-                , VarHeight = a.mip3 == null ? null : a.mip2.Value
-                , TestResult = a.TestResult});
+            query = q3.OrderBy(a => a.Product.Id).Select(a => new DisplayResult
+            {
+                Operation = a.Product.ProductionOrder.Parent.ExternalId
+                ,
+                Batch = a.Batch
+                ,
+                BatchType = a.BatchType
+                ,
+                BatchSegment = a.BatchSegment
+                ,
+                BatchLot = a.BatchLot
+                ,
+                PowderCharge = a.PowderCharge
+                ,
+                TestPlan = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Name
+                ,
+                TestPlanRevision = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Revision
+                ,
+                Material = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.Code
+                ,
+                MaterialDescription = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.ItemDescription
+                ,
+                VaristorType = a.mip1 == null ? null : a.mip1.Value
+                ,
+                VarDiameter = a.mip2 == null ? null : a.mip2.Value
+                ,
+                VarHeight = a.mip3 == null ? null : a.mip2.Value
+                ,
+                TestResult = a.TestResult
+            });
 
             //query = dbModel.ProductionOrders
             //    .Where(po => po.ProductionOrderProperties.Count == 0 || po.ProductionOrderProperties.Any(pop => pop.Name == "TestPlanId"))
@@ -163,7 +206,15 @@ namespace DBMS.Processors
 
             //        ;
 
-            //FetchPage(pageNumber);
+        }
+
+        private void MainForm_ConnectionChaged(string connectionName)
+        {
+            if (dbModel != null)
+                dbModel.Dispose();
+
+            dbModel = new DBModel("name=" + MainForm.ConnectionName);
+            BuildQuery();
         }
 
         public void Dispose()
