@@ -1,4 +1,6 @@
-﻿create view
+﻿use DB
+GO
+create view
 
 [dbo].[pagging_view]
 
@@ -54,3 +56,77 @@ mip3.Value AS VarHeight,
 
 GO
 
+use DB_Indexed
+go
+
+create view
+
+[dbo].[pagging_view] with schemabinding
+
+as
+
+select 
+d.Id,
+d.Operation,
+
+d.BatchSegment,
+d.BatchLot,
+
+d.PowderCharge,
+
+d.TestPlan,
+d.TestPlanRevision,
+
+d.Material,
+d.MaterialDescription,
+
+d.VaristorType,
+d.VarDiameter,
+d.VarHeight,
+d.TestResultId
+	  ,t.[TestTs]
+      ,t.[ProductSerial]
+      ,t.[TestStatus]
+      ,t.[Class1]
+      ,t.[Class2]
+      ,t.[TestTemperature]
+      ,t.[DCTs]
+      ,t.[DCParam1]
+      ,t.[DCParam2]
+      ,t.[DCParam3]
+      ,t.[DCParam4]
+      ,t.[DCParam5]
+      ,t.[DCParam6]
+      ,t.[DCParam7]
+      ,t.[DCParam8]
+      ,t.[DCAlpha]
+      ,t.[DCStatus]
+      ,t.[ACTs]
+      ,t.[ACParam1]
+      ,t.[ACParam2]
+      ,t.[ACParam3]
+      ,t.[ACParam4]
+      ,t.[ACParam5]
+      ,t.[ACStatus]
+      ,t.[RestTs]
+      ,t.[RestParam1]
+      ,t.[RestParam2]
+      ,t.[RestParam3]
+      ,t.[RestParam4]
+      ,t.[RestParam5]
+      ,t.[RestParam6]
+      ,t.[RestStatus]
+      ,t.[ChargeTs]
+      ,t.[ChargeParam1]
+      ,t.[ChargeParam2]
+      ,t.[ChargeParam3]
+      ,t.[ChargeStatus]
+
+from dbo.DisplayResults d
+inner join dbo.TestResults t on t.Id = d.TestResultId
+
+GO
+
+ CREATE UNIQUE CLUSTERED INDEX Index_testResultId ON [pagging_view] (Id, TestResultId)
+ 
+ GO

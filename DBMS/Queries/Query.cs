@@ -288,7 +288,7 @@ count(*)
   offset {0} rows fetch next {1} rows only)
 
   select 
-[Operation]
+p.[Operation]
       ,p.[Batch]
       ,p.[BatchType]
       ,p.[BatchSegment]

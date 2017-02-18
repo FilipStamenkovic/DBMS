@@ -223,7 +223,6 @@ namespace DBMS
         private void fixedPaggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
-
             SetProcessorAndRefresh(new PaggingProcessor(Query.PaggingQuery, dataGridView.ColumnCount, Query.PaggingQueryCount));
         }
 
