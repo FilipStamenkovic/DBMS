@@ -6,30 +6,79 @@ namespace DBMS.DataLayer
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class TestResult
+    public partial class PaggingView
     {
+        [StringLength(255)]
+        public string Operation { get; set; }
+
+        [StringLength(3000)]
+        public string Batch { get; set; }
+
+        [StringLength(3000)]
+        public string BatchType { get; set; }
+
+        public string BatchSegment { get; set; }
+
+        public string BatchLot { get; set; }
+
+        [StringLength(3000)]
+        public string PowderCharge { get; set; }
+
+        [StringLength(255)]
+        public string TestPlan { get; set; }
+
+        public int? TestPlanRevision { get; set; }
+
+        [StringLength(255)]
+        public string Material { get; set; }
+
+        [StringLength(255)]
+        public string MaterialDescription { get; set; }
+
+        [StringLength(255)]
+        public string VaristorType { get; set; }
+
+        [StringLength(255)]
+        public string VarDiameter { get; set; }
+
+        [StringLength(255)]
+        public string VarHeight { get; set; }
+
+        [Key]
+        [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
         public DateTime LastUpdateTs { get; set; }
 
+        [Key]
+        [Column(Order = 2)]
         public DateTime TestTs { get; set; }
 
-        [Required]
+        [Key]
+        [Column(Order = 3)]
         [StringLength(255)]
         public string ProductSerial { get; set; }
 
-        [Required]
+        [Key]
+        [Column(Order = 4)]
         [StringLength(255)]
         public string TestStatus { get; set; }
 
-        [Required]
+        [Key]
+        [Column(Order = 5)]
         [StringLength(255)]
         public string Class1 { get; set; }
 
-        [Required]
+        [Key]
+        [Column(Order = 6)]
         [StringLength(255)]
         public string Class2 { get; set; }
 
+        [Key]
+        [Column(Order = 7)]
         public decimal TestTemperature { get; set; }
 
         public DateTime? DCTs { get; set; }
@@ -105,8 +154,8 @@ namespace DBMS.DataLayer
         [StringLength(255)]
         public string ChargeStatus { get; set; }
 
+        [Key]
+        [Column(Order = 8)]
         public bool Valid { get; set; }
-        
-        public virtual DisplayResult DisplayResult { get; set; }
     }
 }

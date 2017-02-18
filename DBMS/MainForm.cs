@@ -30,7 +30,9 @@ namespace DBMS
         private TextBox filterBox;
         private bool IndexOn = false;
         private ScrollBar s;
+        public static bool UseDisplayResultsTable = false;
         public static event DbConnectionChanged ConnectionChaged;
+        public static event UsePreJoinedTableChanged UseDisplayResultsChanged;
 
         public static string ConnectionName { get; internal set; }
 
@@ -39,9 +41,6 @@ namespace DBMS
             InitializeComponent();
             dataGridView = null;
             ConnectionName = "DBConnection";
-
-            
-
         }
 
         private void SetProcessorAndRefresh(IProcessor processorType)
@@ -211,8 +210,6 @@ namespace DBMS
 
         private void eFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateDataGridView(true);
-            SetProcessorAndRefresh(new EFProcessor(dataGridView));
         }
 
         private void Processor_QueryExecuted(double time, int rowCount)
@@ -235,6 +232,7 @@ namespace DBMS
         private void fToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDataGridView(true);
+            SetProcessorAndRefresh(new ViewProcessor(Query.OneTableSqlQuery, dataGridView.ColumnCount, Query.OneTableSqlCount));
         }
 
         private void initialPaggingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -636,8 +634,47 @@ namespace DBMS
             columnRange.ToList().ForEach(c => c.SortMode = DataGridViewColumnSortMode.Programmatic);
             this.dataGridView.Columns.AddRange(columnRange);
 
-        }        
+        }
+
+        private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (UseDisplayResultsTable)
+            {
+                UseDisplayResultsTable = false;
+
+                if (UseDisplayResultsChanged != null)
+                    UseDisplayResultsChanged.Invoke(true);
+
+                dataGridView.RowCount = processor.GetRowCount();
+            }
+
+            if(dataGridView == null || !(processor is EFProcessor))
+            {
+                CreateDataGridView(true);
+                SetProcessorAndRefresh(new EFProcessor(dataGridView));
+            }
+        }
+
+        private void preJoinedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!UseDisplayResultsTable)
+            {
+                UseDisplayResultsTable = true;
+
+                if (UseDisplayResultsChanged != null)
+                    UseDisplayResultsChanged.Invoke(true);
+
+                dataGridView.RowCount = processor.GetRowCount();
+            }
+
+            if (dataGridView == null || !(processor is EFProcessor))
+            {
+                CreateDataGridView(true);
+                SetProcessorAndRefresh(new EFProcessor(dataGridView));
+            }
+        }
     }
 
     public delegate void DbConnectionChanged(string connectionName);
+    public delegate void UsePreJoinedTableChanged(bool usePreJoinedTable);
 }

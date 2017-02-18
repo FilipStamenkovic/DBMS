@@ -281,10 +281,12 @@ count(*)
             {0}
 ";
         public const string ViewCount = @"select count(*) from pagging_view p {0}";
+        public const string OneTableSqlCount = @"select count(*) from DisplayResults p inner join TestResults r on p.TestResultId = r.Id {0}";
         public const string ViewQuery = @"with pg as (SELECT
     p.id
-  FROM [DB].[dbo].[pagging_view] p
-	order by {2} p.id
+  FROM pagging_view p
+    {2}
+	order by {3} p.id
   offset {0} rows fetch next {1} rows only)
 
   select 
@@ -340,6 +342,71 @@ p.[Operation]
       ,p.[ChargeStatus]
 from pagging_view p 
   inner join pg on pg.id = p.id
-  order by {2} p.Id";
+  order by {3} p.Id";
+
+        public const string OneTableSqlQuery = @"with pg as (SELECT
+    p.Id as pid, r.Id as rid
+  from DisplayResults p inner join TestResults r on p.TestResultId = r.Id
+    {2}
+	order by {3} p.Id
+  offset {0} rows fetch next {1} rows only)
+
+  select 
+       p.[Operation]
+      ,p.[Batch]
+      ,p.[BatchType]
+      ,p.[BatchSegment]
+      ,p.[BatchLot]
+      ,p.[PowderCharge]
+      ,p.[TestPlan]
+      ,p.[TestPlanRevision]
+      ,p.[Material]
+      ,p.[MaterialDescription]
+      ,p.[VaristorType]
+      ,p.[VarDiameter]
+      ,p.[VarHeight]
+      ,r.[TestTs]
+      ,r.[ProductSerial]
+      ,r.[TestStatus]
+      ,r.[Class1]
+      ,r.[Class2]
+      ,r.[TestTemperature]
+      ,r.[DCTs]
+      ,r.[DCParam1]
+      ,r.[DCParam2]
+      ,r.[DCParam3]
+      ,r.[DCParam4]
+      ,r.[DCParam5]
+      ,r.[DCParam6]
+      ,r.[DCParam7]
+      ,r.[DCParam8]
+      ,r.[DCAlpha]
+      ,r.[DCStatus]
+      ,r.[ACTs]
+      ,r.[ACParam1]
+      ,r.[ACParam2]
+      ,r.[ACParam3]
+      ,r.[ACParam4]
+      ,r.[ACParam5]
+      ,r.[ACStatus]
+      ,r.[RestTs]
+      ,r.[RestParam1]
+      ,r.[RestParam2]
+      ,r.[RestParam3]
+      ,r.[RestParam4]
+      ,r.[RestParam5]
+      ,r.[RestParam6]
+      ,r.[RestStatus]
+      ,r.[ChargeTs]
+      ,r.[ChargeParam1]
+      ,r.[ChargeParam2]
+      ,r.[ChargeParam3]
+      ,r.[ChargeStatus]
+from DisplayResults p,  TestResults r, pg
+where
+pg.pid = p.Id
+and
+pg.rid = r.Id
+  order by {3} pg.pid";
     }    
 }

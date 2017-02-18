@@ -42,6 +42,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel = new System.Windows.Forms.Panel();
+            this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preJoinedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -86,6 +88,9 @@
             // 
             // eFToolStripMenuItem
             // 
+            this.eFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.joinToolStripMenuItem,
+            this.preJoinedToolStripMenuItem});
             this.eFToolStripMenuItem.Name = "eFToolStripMenuItem";
             this.eFToolStripMenuItem.Size = new System.Drawing.Size(31, 20);
             this.eFToolStripMenuItem.Text = "EF";
@@ -160,6 +165,20 @@
             this.panel.Size = new System.Drawing.Size(808, 477);
             this.panel.TabIndex = 3;
             // 
+            // joinToolStripMenuItem
+            // 
+            this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
+            this.joinToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.joinToolStripMenuItem.Text = "Join";
+            this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
+            // 
+            // preJoinedToolStripMenuItem
+            // 
+            this.preJoinedToolStripMenuItem.Name = "preJoinedToolStripMenuItem";
+            this.preJoinedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preJoinedToolStripMenuItem.Text = "PreJoined";
+            this.preJoinedToolStripMenuItem.Click += new System.EventHandler(this.preJoinedToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,6 +215,8 @@
         private System.Windows.Forms.ToolStripMenuItem initialPaggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixedPaggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem turnIndexONToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preJoinedToolStripMenuItem;
     }
 }
 

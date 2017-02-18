@@ -68,6 +68,7 @@
     <Compile Include="DataLayer\MaterialClass.cs" />
     <Compile Include="DataLayer\MaterialItem.cs" />
     <Compile Include="DataLayer\MaterialItemProperty.cs" />
+    <Compile Include="DataLayer\PaggingView.cs" />
     <Compile Include="DataLayer\Product.cs" />
     <Compile Include="DataLayer\ProductionOrder.cs" />
     <Compile Include="DataLayer\ProductionOrderProperty.cs" />
@@ -86,7 +87,7 @@
     <Compile Include="Processors\ViewProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Queries\CreateView.sql" />
+    <Content Include="Queries\View.sql" />
     <Compile Include="Queries\Query.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

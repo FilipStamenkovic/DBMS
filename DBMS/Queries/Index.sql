@@ -5,3 +5,5 @@ CREATE INDEX IX_TestResult_ProductSerial on TestResults (ProductSerial);
 CREATE INDEX IX_ProductProperty_Product ON ProductProperties (ProductId); 
 
 CREATE INDEX IX_ProductionOrderProperty_ProductionOrder ON ProductionOrderProperties (ProductionOrderId);
+
+CREATE INDEX IX_DisplayResult_TestResult ON DisplayResults (TestResultId);

@@ -13,6 +13,7 @@ namespace DBMS.DataLayer
         }
 
         public virtual DbSet<ConfigurationVariant> ConfigurationVariants { get; set; }
+        public virtual DbSet<DisplayResult> DisplayResults { get; set; }
         public virtual DbSet<MaterialClass> MaterialClasses { get; set; }
         public virtual DbSet<MaterialItemProperty> MaterialItemProperties { get; set; }
         public virtual DbSet<MaterialItem> MaterialItems { get; set; }
@@ -22,6 +23,7 @@ namespace DBMS.DataLayer
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
         public virtual DbSet<TestResult> TestResults { get; set; }
+        public virtual DbSet<PaggingView> PaggingView { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,9 +37,9 @@ namespace DBMS.DataLayer
                 .WithRequired(e => e.MaterialItem)
                 .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<ProductionOrderProperty>()
-            //    .HasOptional(e => e.ProductionOrderProperties1)
-            //    .WithRequired(e => e.ProductionOrderProperty1);
+            modelBuilder.Entity<TestResult>()
+                .HasOptional(e => e.DisplayResult)
+                .WithRequired(e => e.TestResult);
 
             modelBuilder.Entity<ProductionOrder>()
                 .Property(e => e.Quantity)
@@ -134,6 +136,70 @@ namespace DBMS.DataLayer
                 .HasPrecision(19, 5);
 
             modelBuilder.Entity<TestResult>()
+                .Property(e => e.ChargeParam2)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.TestTemperature)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam1)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam2)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam3)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam4)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam5)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.DCParam6)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.ACParam1)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.ACParam2)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.ACParam3)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.RestParam1)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.RestParam2)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.RestParam3)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.RestParam4)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
+                .Property(e => e.RestParam5)
+                .HasPrecision(19, 5);
+
+            modelBuilder.Entity<PaggingView>()
                 .Property(e => e.ChargeParam2)
                 .HasPrecision(19, 5);
         }

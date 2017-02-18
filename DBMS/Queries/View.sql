@@ -2,7 +2,7 @@
 GO
 create view
 
-[dbo].[pagging_view]
+[dbo].[PaggingView]
 
 as
 
@@ -130,3 +130,12 @@ GO
  CREATE UNIQUE CLUSTERED INDEX Index_testResultId ON [pagging_view] (Id, TestResultId)
  
  GO
+
+--Create table DisplayResults
+select ROW_NUMBER() OVER(ORDER BY pv.Id ASC) as Id, pv.Operation, pv.Batch, pv.BatchType, pv.BatchSegment, pv.BatchLot, pv.PowderCharge, pv.TestPlan
+	, pv.TestPlanRevision, pv.Material, pv.MaterialDescription, pv.VaristorType, pv.VarDiameter, pv.VarHeight, pv.Id as TestResultId
+into 
+DisplayResults 
+from 
+PaggingView pv;
+----------------------------
