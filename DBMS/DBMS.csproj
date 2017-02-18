@@ -86,6 +86,7 @@
     <Compile Include="Processors\ViewProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Queries\CreateView.sql" />
     <Compile Include="Queries\Query.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
