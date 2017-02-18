@@ -280,11 +280,11 @@ count(*)
 			t.valid = 1
             {0}
 ";
-        public const string ViewCount = @"select count(*) from pagging_view p {0}";
+        public const string ViewCount = @"select count(*) from PaggingView p {0}";
         public const string OneTableSqlCount = @"select count(*) from DisplayResults p inner join TestResults r on p.TestResultId = r.Id {0}";
         public const string ViewQuery = @"with pg as (SELECT
     p.id
-  FROM pagging_view p
+  FROM PaggingView p
     {2}
 	order by {3} p.id
   offset {0} rows fetch next {1} rows only)
@@ -340,7 +340,7 @@ p.[Operation]
       ,p.[ChargeParam2]
       ,p.[ChargeParam3]
       ,p.[ChargeStatus]
-from pagging_view p 
+from PaggingView p 
   inner join pg on pg.id = p.id
   order by {3} p.Id";
 

@@ -61,13 +61,16 @@ go
 
 create view
 
-[dbo].[pagging_view] with schemabinding
+[dbo].PaggingView with schemabinding
 
 as
 
 select 
 d.Id,
 d.Operation,
+
+d.Batch,
+d.BatchType,
 
 d.BatchSegment,
 d.BatchLot,
@@ -127,7 +130,7 @@ inner join dbo.TestResults t on t.Id = d.TestResultId
 
 GO
 
- CREATE UNIQUE CLUSTERED INDEX Index_testResultId ON [pagging_view] (Id, TestResultId)
+ CREATE UNIQUE CLUSTERED INDEX Index_testResultId ON PaggingView (Id, TestResultId)
  
  GO
 
