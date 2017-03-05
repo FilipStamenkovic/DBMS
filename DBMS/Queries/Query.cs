@@ -248,8 +248,7 @@ mip3.Value AS VarHeight
             
 order {3} by t.Id
 
-OPTION (FORCE ORDER)
-;";
+OPTION (FORCE ORDER);";
 
         public const string PaggingQueryCount = @"Select
 count(*)
