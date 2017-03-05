@@ -80,7 +80,7 @@ namespace DBMS
                 dataGridView.Dispose();
             }            
 
-            ((ISupportInitialize)(dataGridView)).BeginInit();
+          //  ((ISupportInitialize)(dataGridView)).BeginInit();
             this.SuspendLayout();
 
             dataGridView = DataGridViewHelper.CreateDataGridView(isVirtual);            
