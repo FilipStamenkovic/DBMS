@@ -145,16 +145,11 @@ mip3.Id AS VarHeightId
 				TestResults t 
 				join Products prod on t.ProductSerial = prod.SerialNumber  
 				
-				join ProductTypes pt on pt.Id = prod.ProductTypeId and pt.Name = 'Varistor'				
+			--	join ProductTypes pt on pt.Id = prod.ProductTypeId and pt.Name = 'Varistor'				
 				
 				join ProductionOrders prodOrder on prodOrder.Id = prod.ProductionOrderId
 				join ProductionOrders ppo on ppo.Id = prodOrder.ParentId
-				join ProductionOrderProperties pop1 on pop1.ProductionOrderId = prodOrder.Id and pop1.Name = 'MOBatch'
-				join ProductionOrderProperties pop2 on pop2.ProductionOrderId = prodOrder.Id and pop2.Name = 'ProductionVersion'
-				join ProductionOrderProperties pop3 on pop3.ProductionOrderId = prodOrder.Id and pop3.Name = 'PowderCharge'
-				left join ProductProperties pp6 on (pp6.ProductId =  prod.ParentId and pp6.Name = 'SegmentName')
-				left join ProductProperties pp7 on (pp7.ProductId =  prod.ParentId and pp7.Name = 'LayerName')
-			
+						
 				left join ProductionOrderProperties TestPlan on prodOrder.Id = TestPlan.ProductionOrderId  and TestPlan.Name = 'TestPlanId'
 				--	GET CONFIGURATION VARIANT BASED ON FETCHED TESTPLAN ID
 				left join ConfigurationVariants cv on CAST (TestPlan.Value as bigint) = cv.Id
@@ -164,8 +159,13 @@ mip3.Id AS VarHeightId
 				left join MaterialItemPropertIes mip1 on cvMI.id = mip1.MaterialItemId and mip1.MaterialClassId in (select Id from MaterialClasses where Name = 'Var_Typ')
 				left join MaterialItemPropertIes mip2 on cvMI.id = mip2.MaterialItemId and mip2.MaterialClassId in (select Id from MaterialClasses where Name = 'Diameter')
 				left join MaterialItemProperties mip3 on cvMI.id = mip3.MaterialItemId and mip3.MaterialClassId in (select Id from MaterialClasses where Name = 'Height')
-          WHERE
-				
+	
+				join ProductionOrderProperties pop1 on pop1.ProductionOrderId = prodOrder.Id and pop1.Name = 'MOBatch'
+				join ProductionOrderProperties pop2 on pop2.ProductionOrderId = prodOrder.Id and pop2.Name = 'ProductionVersion'
+				join ProductionOrderProperties pop3 on pop3.ProductionOrderId = prodOrder.Id and pop3.Name = 'PowderCharge'
+				left join ProductProperties pp6 on (pp6.ProductId =  prod.ParentId and pp6.Name = 'SegmentName')
+				left join ProductProperties pp7 on (pp7.ProductId =  prod.ParentId and pp7.Name = 'LayerName')
+          WHERE	
 			t.valid = 1
             {2}
 order by {3} t.Id 
@@ -232,7 +232,6 @@ mip3.Value AS VarHeight
 			
 				TestIds ids
 				join TestResults t on t.Id = ids.TestResultId
-
 				join ProductionOrders ppo on ppo.Id = ids.OperationId
 				join ProductionOrderProperties pop1 on pop1.Id = ids.BatchId
 				join ProductionOrderProperties pop2 on pop2.Id = ids.BatchTypeId
@@ -247,7 +246,10 @@ mip3.Value AS VarHeight
 				left join MaterialItemPropertIes mip2 on mip2.Id = ids.VarDiameterId
 				left join MaterialItemProperties mip3 on mip3.Id = ids.VarHeightId
             
-order by {3} t.Id ";
+order {3} by t.Id
+
+OPTION (FORCE ORDER)
+;";
 
         public const string PaggingQueryCount = @"Select
 count(*)
