@@ -58,6 +58,11 @@ mip3.Value AS VarHeight,
 
 GO
 
+EXEC sp_configure 'priority boost', 1 ;  
+GO  
+RECONFIGURE;  
+GO  
+
 use DB_Indexed
 go
 
@@ -140,6 +145,12 @@ mip3.Value AS VarHeight
 			t.valid = 1
 
 	go
+
+	
+EXEC sp_configure 'priority boost', 1 ;  
+GO  
+RECONFIGURE;  
+GO  
 
 --Create table DisplayResults
 select ROW_NUMBER() OVER(ORDER BY pv.Id ASC) as Id, pv.Operation, pv.Batch, pv.BatchType, pv.BatchSegment, pv.BatchLot, pv.PowderCharge, pv.TestPlan
