@@ -74,63 +74,65 @@ namespace DBMS.Processors
             //    .Take(pageSize)
             //    .AsQueryable();
 
-            if(MainForm.UseDisplayResultsTable)
-            {
-                query = dbModel.DisplayResults.Include(r => r.TestResult).OrderBy(d => d.Id).AsQueryable();
-            }
-            else
-            {
-                var validTestResults = dbModel.TestResults.Where(tr => tr.Valid);
-                var varistorProducts = dbModel.Products.Where(p => p.ProductType.Name == "Varistor");
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            //if (MainForm.UseDisplayResultsTable)
+            //{
+            //    query = dbModel.DisplayResults.Include(r => r.TestResult).OrderBy(d => d.Id).AsQueryable();
+            //}
+            //else
+            //{
+            //    var validTestResults = dbModel.TestResults.Where(tr => tr.Valid);
+            //    var varistorProducts = dbModel.Products.Where(p => p.ProductType.Name == "Varistor");
 
-                var q1 = varistorProducts.Join(validTestResults, p => p.SerialNumber, tr => tr.ProductSerial
-                    , (p, tr) => new { Product = p, TestResult = tr, TestPlanId = p.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "TestPlanId") });
+            //    var q1 = varistorProducts.Join(validTestResults, p => p.SerialNumber, tr => tr.ProductSerial
+            //        , (p, tr) => new { Product = p, TestResult = tr, TestPlanId = p.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "TestPlanId") });
 
-                var q2 = q1.Select(a => new {
-                    Product = a.Product
-                    , TestResult = a.TestResult
-                    , TestPlanId = a.TestPlanId
-                    , ConfigurationVariant = (a.TestPlanId == null) ? null : dbModel.ConfigurationVariants.FirstOrDefault(c => c.Id.ToString() == a.TestPlanId.Value)
-                    , Batch = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "MOBatch").Value
-                    , BatchType = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "ProductionVersion").Value
-                    , BatchSegment = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "SegmentName").Value
-                    , BatchLot = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "LayerName").Value
-                    , PowderCharge = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "PowderCharge").Value
-                });
+            //    var q2 = q1.Select(a => new {
+            //        Product = a.Product
+            //        , TestResult = a.TestResult
+            //        , TestPlanId = a.TestPlanId
+            //        , ConfigurationVariant = (a.TestPlanId == null) ? null : dbModel.ConfigurationVariants.FirstOrDefault(c => c.Id.ToString() == a.TestPlanId.Value)
+            //        , Batch = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "MOBatch").Value
+            //        , BatchType = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "ProductionVersion").Value
+            //        , BatchSegment = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "SegmentName").Value
+            //        , BatchLot = a.Product.Parent.ProductProperties.FirstOrDefault(pp => pp.Name == "LayerName").Value
+            //        , PowderCharge = a.Product.ProductionOrder.ProductionOrderProperties.FirstOrDefault(pop => pop.Name == "PowderCharge").Value
+            //    });
 
-                var q3 = q2.Select(a => new {
-                    Product = a.Product
-                    , TestResult = a.TestResult
-                    , TestPlanId = a.TestPlanId
-                    , ConfigurationVariant = a.ConfigurationVariant
-                    , Batch = a.Batch
-                    , BatchType = a.BatchType
-                    , BatchSegment = a.BatchSegment
-                    , BatchLot = a.BatchLot
-                    , PowderCharge = a.PowderCharge
-                    , mip1 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Var_Typ")
-                    , mip2 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Diameter")
-                    , mip3 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Height")
-                });
+            //    var q3 = q2.Select(a => new {
+            //        Product = a.Product
+            //        , TestResult = a.TestResult
+            //        , TestPlanId = a.TestPlanId
+            //        , ConfigurationVariant = a.ConfigurationVariant
+            //        , Batch = a.Batch
+            //        , BatchType = a.BatchType
+            //        , BatchSegment = a.BatchSegment
+            //        , BatchLot = a.BatchLot
+            //        , PowderCharge = a.PowderCharge
+            //        , mip1 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Var_Typ")
+            //        , mip2 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Diameter")
+            //        , mip3 = (a.ConfigurationVariant == null || a.ConfigurationVariant.MaterialItem == null) ? null : a.ConfigurationVariant.MaterialItem.MaterialItemProperties.FirstOrDefault(p => p.MaterialClass.Name == "Height")
+            //    });
 
-                query = q3.OrderBy(a => a.Product.Id).Select(a => new
-                {
-                    Operation = a.Product.ProductionOrder.Parent.ExternalId
-                    , Batch = a.Batch
-                    , BatchType = a.BatchType
-                    , BatchSegment = a.BatchSegment
-                    , BatchLot = a.BatchLot
-                    , PowderCharge = a.PowderCharge
-                    , TestPlan = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Name
-                    , TestPlanRevision = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Revision
-                    , Material = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.Code
-                    , MaterialDescription = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.ItemDescription
-                    , VaristorType = a.mip1 == null ? null : a.mip1.Value
-                    , VarDiameter = a.mip2 == null ? null : a.mip2.Value
-                    , VarHeight = a.mip3 == null ? null : a.mip2.Value
-                    , TestResult = a.TestResult
-                });
-            }
+            //    query = q3.OrderBy(a => a.Product.Id).Select(a => new
+            //    {
+            //        Operation = a.Product.ProductionOrder.Parent.ExternalId
+            //        , Batch = a.Batch
+            //        , BatchType = a.BatchType
+            //        , BatchSegment = a.BatchSegment
+            //        , BatchLot = a.BatchLot
+            //        , PowderCharge = a.PowderCharge
+            //        , TestPlan = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Name
+            //        , TestPlanRevision = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.Revision
+            //        , Material = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.Code
+            //        , MaterialDescription = a.ConfigurationVariant == null ? null : a.ConfigurationVariant.MaterialItem.ItemDescription
+            //        , VaristorType = a.mip1 == null ? null : a.mip1.Value
+            //        , VarDiameter = a.mip2 == null ? null : a.mip2.Value
+            //        , VarHeight = a.mip3 == null ? null : a.mip2.Value
+            //        , TestResult = a.TestResult
+            //    });
+            //}
+            //-----------------------------------------------------------------------------------------------------------------------------------------------------------
             
             //query = dbModel.ProductionOrders
             //    .Where(po => po.ProductionOrderProperties.Count == 0 || po.ProductionOrderProperties.Any(pop => pop.Name == "TestPlanId"))
@@ -187,6 +189,14 @@ namespace DBMS.Processors
             //        productionOrderProperty3.ProductionOrderId == productionOrder.Id &&
 
             //        ;
+
+            //query = from testResult in dbModel.TestResults 
+            //            join product in dbModel.Products on testResult.ProductSerial equals product.SerialNumber
+            //        from testPlan in dbModel.ProductionOrderProperties.Where(pop => product.ProductionOrderId == pop.ProductionOrderId && pop.Name == "TestPlanId").DefaultIfEmpty()
+            //        where
+            //            product.ProductType.Name == "Varistor"
+            //            && testResult.Valid
+            //            && 
 
         }
 
